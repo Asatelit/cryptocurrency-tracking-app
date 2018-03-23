@@ -1,0 +1,25 @@
+.ToolBar {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  padding: 12px 24px;
+  height: 80px;
+  color: #4285F4;
+}
+
+.ToolBar .Caption {
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+
+.ToolBar .Button-label {
+  letter-spacing: .05em;
+  margin-left: .3em;
+  font-size: .8rem;
+}
+
+.ColumnsMenuForm {
+  padding: 0 2rem;
+  outline: none;
+}

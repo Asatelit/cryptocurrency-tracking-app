@@ -1,0 +1,128 @@
+.Grid {
+  border-radius: 0 !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  overflow: auto !important;
+  height: 100%;
+  border: none !important;
+}
+
+.Grid *::-webkit-scrollbar-track {
+  background-color: transparent;
+  position: absolute;
+}
+
+.Grid *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+}
+
+.Grid *::-webkit-scrollbar-thumb {
+  background-color: #CCC;
+  border: 2px solid transparent;
+}
+
+
+.Grid .ticker div {
+  display: inline-block;
+}
+
+.Grid .ticker .chg {
+  text-align: center;
+  width: 4em;
+}
+
+.Grid .ticker .glyph {
+  font-size: 120%;
+  text-align: center;
+  width: 1em;
+}
+
+.Grid .ticker .spark {
+  margin-left: 1rem;
+  width: 4em;
+  height: 1em;
+  opacity: .65;
+}
+
+.Grid .ticker.chg-up {
+  color: green;
+}
+
+.Grid .ticker.chg-down {
+  color: red;
+}
+
+.Grid .ticker .spark svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 1px;
+  overflow: visible;
+}
+
+
+.Grid .indicator.sell {
+  color: red;
+}
+
+.Grid .indicator.buy {
+  color: green;
+}
+
+
+.Grid .wj-flexchart {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+.Grid .wj-header.wj-cell {
+  color: inherit;
+  background: #FFF;
+  border: transparent;
+  border-bottom: 1px solid #E6E6E6;
+  font-weight: 500;
+  padding: .25rem;
+}
+
+.Grid .wj-cell {
+  background-color: #fff;
+  border: transparent;
+  border-bottom: 1px solid #E6E6E6;
+  padding: .5rem;
+}
+
+.Grid .wj-rowheaders .wj-cell.wj-header {
+  padding: 1rem .5rem;
+  background: #fbfbfb;
+}
+
+.Grid .wj-cell > div {
+  position: relative;
+  margin: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Grid .wj-alt:not(.wj-state-selected):not(.wj-state-multi-selected) {
+  background-color: #fff;
+}
+
+.Grid .wj-alt:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
+  background: #fff;
+}
+
+.Grid .wj-state-selected {
+  background: #F5F5F5;
+  color: #000;
+}
+
+.Grid .wj-state-multi-selected {
+  background: #F5F5F5;
+  color: #000;
+}

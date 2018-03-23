@@ -1,0 +1,27 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: auto;
+}
+
+.App-content {
+  background: #FAFAFA;
+  display: flex;
+  flex: 1;
+  padding: 24px;
+}
+
+.App-grid {
+  width: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  background: white;
+  box-sizing: border-box;
+  box-shadow: 0 0 8px rgba(0,0,0,.15);
+}

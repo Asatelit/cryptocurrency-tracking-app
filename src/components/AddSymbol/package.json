@@ -1,0 +1,6 @@
+{
+  "name": "AddSymbol",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AddSymbol.js"
+}

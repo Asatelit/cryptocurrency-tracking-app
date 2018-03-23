@@ -1,0 +1,41 @@
+.AppBar {
+  display: flex;
+  width: 100%;
+  color: #FFF;
+  height: 48px;
+  padding: 0 24px;
+  background: #0044BF;
+  transition: width 200ms ease-in-out;
+  box-sizing: border-box;
+}
+
+.AppBar--collapsed {
+  width: calc(100% - 400px);
+}
+
+.AppBar .Tabs {
+  width: 100%;
+}
+
+.AppBar .TabsIndicator {
+  background: #3B78E7;
+  height: 100%;
+}
+
+.AppBar .Tab {
+  text-transform: none;
+  z-index: 1;
+}
+
+.AppBar .Title {
+  margin-right: 1em;
+}
+
+.AppBar .IconButton {
+  opacity: .85;
+  transition: opacity .15s;
+}
+
+.AppBar .IconButton:hover {
+  opacity: 1;
+}

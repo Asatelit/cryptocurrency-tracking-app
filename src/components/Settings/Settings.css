@@ -1,0 +1,22 @@
+.Settings {
+  right: -410px;
+  display: block;
+  position: fixed;
+  width: 400px;
+  height: 100%;
+  top: 0;
+  z-index: 100;
+  transition: all 200ms ease-in-out;
+}
+
+.Settings--open {
+  right: 0;
+}
+
+@media (max-width: 740px) {
+  .Settings {
+    width: 100%;
+    right: -105%;
+  }
+}
+

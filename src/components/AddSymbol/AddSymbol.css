@@ -1,0 +1,16 @@
+.AddSymbol {
+
+}
+
+.AddSymbol .FormControl {
+  max-width: 100%;
+  width: 100%;
+}
+
+.AddSymbol .Chip {
+  margin: 0 .5em .5em 0;
+}
+
+.AddSymbol .SelectMenu {
+  white-space: normal;
+}

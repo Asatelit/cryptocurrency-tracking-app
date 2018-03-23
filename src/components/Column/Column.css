@@ -1,0 +1,21 @@
+.Column {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+}
+
+.Column--shrink {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.Column--left { justify-content: flex-start; }
+.Column--right { justify-content: flex-end; }
+.Column--center { justify-content: center; }
+.Column--justify { justify-content: space-between; }
+.Column--spaced { justify-content: space-around; }
+.Column--top { align-items: flex-start; }
+.Column--middle { align-items: center; }
+.Column--bottom { align-items: flex-end; }
+.Column--stretch { align-items: stretch; }
