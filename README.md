@@ -1,9 +1,10 @@
 # Cryptocurrency Tracking App
 
-A sample financial app for keeping track of the cryptocurrency market built on top of React, Redux, [Wijmo FlexGrid](https://www.grapecity.com/en/wijmo-flexgrid), [Wijmo FinantialChart](Wijmo FinancialChart
-) and Material UI.
+A sample financial app for keeping track of the cryptocurrency market built on top of React, Redux, 
+[Wijmo FlexGrid](https://www.grapecity.com/en/wijmo-flexgrid),
+[Wijmo FinantialChart](https://www.grapecity.com/en/wijmo-financialchart) and Material UI.
 
-### Getting Started
+## Getting Started
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
