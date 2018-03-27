@@ -61,7 +61,6 @@ export function updateTradingData(portfolio) {
   };
 }
 
-
 /**
  * Changes columns visibility
  * @arg {boolean} visibility
@@ -81,6 +80,17 @@ export function changeFilterText(str) {
   return {
     type: ActionTypes.CHANGE_FILTER_TEXT,
     payload: str,
+  };
+}
+
+/**
+ * Updates settings
+ * @arg {Object} settings
+ */
+export function updateSettings(settings) {
+  return {
+    type: ActionTypes.UPDATE_SETTINGS,
+    payload: settings,
   };
 }
 

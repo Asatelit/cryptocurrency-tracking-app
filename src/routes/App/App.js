@@ -8,27 +8,55 @@ import * as portfoliosActionCreators from '../../actions/portfoliosActions';
 import * as appActionCreators from '../../actions/appActions';
 import * as gridActionCreators from '../../actions/gridActions';
 
-import Grid from '../../components/Grid';
-import AppBar from '../../components/AppBar';
-import TopBar from '../../components/TopBar';
-import ToolBar from '../../components/ToolBar';
-import Settings from '../../components/Settings';
-import AddSymbol from '../../components/AddSymbol';
 import AddPortfolio from '../../components/AddPortfolio';
+import AddSymbol from '../../components/AddSymbol';
+import AppBar from '../../components/AppBar';
 import EditPortfolio from '../../components/EditPortfolio';
+import Grid from '../../components/Grid';
+import Settings from '../../components/Settings';
+import ToolBar from '../../components/ToolBar';
+import TopBar from '../../components/TopBar';
 
 import './App.css';
 import './Wijmo.css';
 
 class App extends Component {
   componentDidMount() {
-    const { appActions } = this.props;
+    const { app, appActions } = this.props;
+    const { settings } = app;
     appActions.getInitialState();
-
-    setInterval(() => {
-      appActions.getInitialState();
-    }, 100000);
+    if (settings.isAutoUpdate) {
+      this.autoUpdate(settings.updateInterval);
+    }
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { settings } = this.props.app;
+    const nextSettings = nextProps.app.settings;
+    const hasNewInterval = settings.updateInterval !== nextSettings.updateInterval;
+    const hasNewAutoUpdate = settings.isAutoUpdate !== nextSettings.isAutoUpdate;
+
+    if (hasNewAutoUpdate || hasNewInterval) {
+      clearInterval(this.autoUpdateInterval);
+      if (nextSettings.isAutoUpdate) {
+        this.autoUpdate(nextSettings.updateInterval);
+      } else {
+        clearInterval(this.autoUpdateInterval);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.autoUpdateInterval);
+  }
+
+  autoUpdateInterval = null;
+
+  autoUpdate = interval => {
+    this.autoUpdateInterval = setInterval(() => {
+      this.props.appActions.getInitialState();
+    }, interval);
+  };
 
   render() {
     const { app, data, portfolios } = this.props;
@@ -51,7 +79,11 @@ class App extends Component {
           tabsList={[]}
           filter={data.filter}
         />
-        <Settings isOpen={app.isSettingsPanelOpen} />
+        <Settings
+          isOpen={app.isSettingsPanelOpen}
+          settings={app.settings}
+          onUpdateSettings={appActions.updateSettings}
+        />
         <div className="App-content">
           <div className="App-grid">
             <ToolBar
@@ -66,6 +98,7 @@ class App extends Component {
               filter={data.filter}
               columns={data.columns}
               section={app.gridSection}
+              settings={app.settings}
               itemsSource={
                 data.filter
                   ? data.trading.filter(
@@ -115,6 +148,13 @@ App.propTypes = {
     isEditDialogOpen: PropTypes.bool,
     isSettingsPanelOpen: PropTypes.bool,
     isSymbolsDialogOpen: PropTypes.bool,
+    settings: PropTypes.shape({
+      isCustomCells: PropTypes.bool,
+      isAutoUpdate: PropTypes.bool,
+      updateInterval: PropTypes.number,
+      isFreezeFirstRow: PropTypes.bool,
+      isFreezeFirstCol: PropTypes.bool,
+    }).isRequired,
   }).isRequired,
 
   // Data Reducer
@@ -122,7 +162,7 @@ App.propTypes = {
     filter: PropTypes.string,
     tickers: PropTypes.array,
     trading: PropTypes.array,
-    columns: PropTypes.array,
+    columns: PropTypes.shape(),
   }).isRequired,
 
   // Portfolios Reducer
@@ -155,18 +195,19 @@ App.propTypes = {
   }).isRequired,
 
   appActions: PropTypes.shape({
-    changeFilterText: PropTypes.func,
-    changeGridSection: PropTypes.func,
-    changeCurrentPortfolio: PropTypes.func,
-    closeAddDialog: PropTypes.func,
-    closeEditDialog: PropTypes.func,
-    closeSymbolsDialog: PropTypes.func,
-    getInitialState: PropTypes.func,
-    openAddDialog: PropTypes.func,
-    openEditDialog: PropTypes.func,
-    openSymbolsDialog: PropTypes.func,
-    toggleSettingsPanel: PropTypes.func,
     updateTradingData: PropTypes.func,
+    updateSettings: PropTypes.func,
+    toggleSettingsPanel: PropTypes.func,
+    openSymbolsDialog: PropTypes.func,
+    openEditDialog: PropTypes.func,
+    openAddDialog: PropTypes.func,
+    getInitialState: PropTypes.func,
+    closeSymbolsDialog: PropTypes.func,
+    closeEditDialog: PropTypes.func,
+    closeAddDialog: PropTypes.func,
+    changeGridSection: PropTypes.func,
+    changeFilterText: PropTypes.func,
+    changeCurrentPortfolio: PropTypes.func,
     changeColumnsVisibility: PropTypes.func,
   }).isRequired,
 };

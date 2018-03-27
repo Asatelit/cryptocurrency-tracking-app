@@ -1,10 +1,44 @@
 .Grid {
-  border-radius: 0 !important;
-  display: flex !important;
-  flex: 1 1 auto !important;
-  overflow: auto !important;
+  display: flex;
+  flex: 1 1 auto;
   height: 100%;
-  border: none !important;
+  position: relative;
+}
+
+.Grid .FlexGrid {
+  border-radius: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  display: flex;
+  overflow: auto;
+}
+
+.Grid .Helper {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  text-align: center;
+  background: white;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.Grid .Helper-icon {
+  opacity: .7;
+  font-size: 3rem;
+  padding: 1rem;
+  border-radius: 50%;
+  background: #eee;
+  margin-bottom: 1rem;
 }
 
 .Grid *::-webkit-scrollbar-track {
@@ -79,50 +113,60 @@
   margin: 0;
 }
 
-
-
-.Grid .wj-header.wj-cell {
+.Grid .FlexGrid .wj-header.wj-cell {
   color: inherit;
   background: #FFF;
   border: transparent;
   border-bottom: 1px solid #E6E6E6;
   font-weight: 500;
-  padding: .25rem;
+  padding: .5rem;
 }
 
-.Grid .wj-cell {
+.Grid .FlexGrid .wj-cell {
   background-color: #fff;
   border: transparent;
   border-bottom: 1px solid #E6E6E6;
   padding: .5rem;
 }
 
-.Grid .wj-rowheaders .wj-cell.wj-header {
+.Grid .FlexGrid .wj-rowheaders .wj-cell.wj-header {
   padding: 1rem .5rem;
   background: #fbfbfb;
 }
 
-.Grid .wj-cell > div {
+.Grid .FlexGrid .wj-cell.wj-frozen-row {
+  border-bottom: 1px solid #D6D6D6;
+}
+
+.Grid .FlexGrid .wj-cell.wj-frozen-col {
+  border-right: 1px solid #D6D6D6;
+}
+
+.Grid .FlexGrid .wj-header.wj-cell.wj-frozen-col {
+  border-right-color: transparent;
+}
+
+.Grid .FlexGrid .wj-cell > div {
   position: relative;
   margin: 0;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.Grid .wj-alt:not(.wj-state-selected):not(.wj-state-multi-selected) {
+.Grid .FlexGrid .wj-alt:not(.wj-state-selected):not(.wj-state-multi-selected) {
   background-color: #fff;
 }
 
-.Grid .wj-alt:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
+.Grid .FlexGrid .wj-alt:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
   background: #fff;
 }
 
-.Grid .wj-state-selected {
+.Grid .FlexGrid .wj-state-selected {
   background: #F5F5F5;
   color: #000;
 }
 
-.Grid .wj-state-multi-selected {
+.Grid .FlexGrid .wj-state-multi-selected {
   background: #F5F5F5;
   color: #000;
 }

@@ -37,8 +37,7 @@ class AddPortfolio extends Component {
         <DialogTitle id="AddPortfolioDialogTitle">New Portfolio</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Create and track your investment portfolio or stock watchlist, maintain
-            transaction history and current holdings.
+            Create and track your portfolio or watchlist and maintain transaction history information.
           </DialogContentText>
           <TextField
             autoFocus

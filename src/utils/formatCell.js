@@ -113,5 +113,5 @@ export default function formatCell(cell, item, col, flare) {
       result = wijmo.Globalize.format(item[col.binding], col.format);
       break;
   }
-  return `<div>${result}<div>`;
+  return result;
 }

@@ -105,7 +105,7 @@ EditPortfolio.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   selectedPortfolio: PropTypes.string.isRequired,
-  portfoliosList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  portfoliosList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default EditPortfolio;

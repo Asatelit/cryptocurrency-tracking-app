@@ -8,6 +8,13 @@ const initialState = {
   isSettingsPanelOpen: false,
   isSymbolsDialogOpen: false,
   gridSection: Assets.OVERVIEW,
+  settings: {
+    isCustomCells: true,
+    isAutoUpdate: true,
+    updateInterval: 30000,
+    isFreezeFirstRow: false,
+    isFreezeFirstCol: false,
+  },
 };
 
 export default createReducer(initialState, {
@@ -49,5 +56,10 @@ export default createReducer(initialState, {
   [Action.CHANGE_GRID_SECTION]: (state, payload) => ({
     ...state,
     gridSection: payload,
+  }),
+
+  [Action.UPDATE_SETTINGS]: (state, payload) => ({
+    ...state,
+    settings: payload,
   }),
 });

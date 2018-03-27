@@ -80,11 +80,11 @@ TopBar.propTypes = {
   filter: PropTypes.string,
   onChangeFilterText: PropTypes.func.isRequired,
   onChangeTab: PropTypes.func.isRequired,
-  selectedTab: PropTypes.oneOf(
+  selectedTab: PropTypes.oneOf([
     AssetsTypes.OVERVIEW,
     AssetsTypes.PERFORMANCE,
     AssetsTypes.TECHNICAL,
-  ).isRequired,
+  ]).isRequired,
 };
 
 TopBar.defaultProps = {

@@ -9,20 +9,18 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
-    "humps": "^2.0.1",
-    "material-ui": "^1.0.0-beta.37",
-    "material-ui-icons": "^1.0.0-beta.36",
-    "prop-types": "^15.6.1",
-    "react": "^16.2.0",
-    "react-addons-update": "^15.6.2",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
+    "classnames": "2.2.5",
+    "humps": "2.0.1",
+    "material-ui": "1.0.0-beta.37",
+    "material-ui-icons": "1.0.0-beta.36",
+    "prop-types": "15.6.1",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-redux": "5.0.7",
     "react-scripts": "1.1.1",
-    "redux": "^3.7.2",
+    "redux": "3.7.2",
     "redux-thunk": "^2.2.0",
-    "wijmo": "http://prerelease.componentone.com/wijmo5/npm-images/C1Wijmo-Enterprise-Eval-CommonJs-5.20173.428.tgz"
+    "wijmo": "5.20181.436"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",

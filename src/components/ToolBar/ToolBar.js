@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* Material UI */
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Typography from 'material-ui/Typography';
 import Menu from 'material-ui/Menu';
 import Button from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
 /* SVG Material icons */
 import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
 import PrintIcon from 'material-ui-icons/Print';
@@ -81,11 +81,11 @@ class ToolBar extends Component {
             </div>
           </Column>
           <Column shrink horizontalAlignment="right">
-            <Button color="inherit" nClick={this.handlePrint}>
+            <Button color="inherit" onClick={this.handlePrint}>
               <PrintIcon />
               <span className="Button-label">Print</span>
             </Button>
-            <Button color="inherit" nClick={this.handleDownload}>
+            <Button color="inherit" onClick={this.handleDownload}>
               <DownloadIcon />
               <span className="Button-label">Download</span>
             </Button>
@@ -97,16 +97,20 @@ class ToolBar extends Component {
 }
 
 ToolBar.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.shape).isRequired,
   onAddSymbols: PropTypes.func.isRequired,
   onHideField: PropTypes.func.isRequired,
   onPrint: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired,
-  section: PropTypes.oneOf(
+  columns: PropTypes.shape({
+    binding: PropTypes.string,
+    header: PropTypes.string,
+    visible: PropTypes.bool,
+  }).isRequired,
+  section: PropTypes.oneOf([
     AssetsTypes.OVERVIEW,
     AssetsTypes.PERFORMANCE,
     AssetsTypes.TECHNICAL,
-  ).isRequired,
+  ]).isRequired,
 };
 
 export default ToolBar;

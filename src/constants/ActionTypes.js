@@ -26,10 +26,13 @@ const ActionTypes = keyMirror({
   // GRID
   GRID_EXPORT: null,
   GRID_PRINT: null,
+  GRID_FREEZE_FIRST_CELL: null,
+  GRID_FREEZE_FIRST_COLUMN: null,
 
   // APP
   CHANGE_FILTER_TEXT: null,
   CHANGE_GRID_SECTION: null,
+  UPDATE_SETTINGS: null,
 });
 
 export default ActionTypes;

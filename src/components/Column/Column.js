@@ -23,7 +23,11 @@ const Column = props => {
 };
 
 Column.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+    PropTypes.string,
+  ]),
   shrink: PropTypes.bool,
   horizontalAlignment: PropTypes.oneOf(['left', 'right', 'center', 'justify', 'spaced']),
   verticalAlignment: PropTypes.oneOf(['top', 'middle', 'bottom', 'stretch']),
@@ -31,6 +35,7 @@ Column.propTypes = {
 
 Column.defaultProps = {
   shrink: false,
+  children: null,
   horizontalAlignment: 'left',
   verticalAlignment: 'middle',
 };

@@ -1,3 +1,20 @@
+.Settings-panel {
+  box-sizing: border-box;
+  box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
+  border-left: 1px solid rgba(222, 227, 231, 0.56);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.Settings-body {
+  overflow: auto;
+  flex: 1;
+  padding: 1rem;
+}
+
 .Settings {
   right: -410px;
   display: block;
@@ -20,3 +37,7 @@
   }
 }
 
+
+.Settings .FormGroup {
+  margin: 0 20px 10px;
+}

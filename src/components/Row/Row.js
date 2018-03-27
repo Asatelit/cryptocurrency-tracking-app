@@ -26,7 +26,11 @@ const Row = props => {
 };
 
 Row.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+    PropTypes.string,
+  ]),
   horizontalAlignment: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.oneOf(['left', 'right', 'center', 'justify', 'spaced']),
@@ -38,6 +42,7 @@ Row.propTypes = {
 };
 
 Row.defaultProps = {
+  children: null,
   horizontalAlignment: false,
   verticalAlignment: false,
 };

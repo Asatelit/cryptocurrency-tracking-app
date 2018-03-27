@@ -5,13 +5,13 @@ import * as wjGridDetail from 'wijmo/wijmo.grid.detail';
 import * as wjChart from 'wijmo/wijmo.chart';
 import { FlexGrid } from 'wijmo/wijmo.react.grid';
 
+import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
+
 import Assets from '../../constants/AssetsTypes';
 import formatCell from '../../utils/formatCell';
 
 import './Grid.css';
 import './Wijmo.css';
-import AssetsTypes from '../../constants/AssetsTypes';
-import randBetween from "../../utils/randBetween";
 
 class Grid extends Component {
   cellElements = {};
@@ -21,6 +21,7 @@ class Grid extends Component {
 
   shouldComponentUpdate(nextProps) {
     const grid = window[Assets.WJ_GRID];
+    const { settings } = this.props;
     const prevItemSource = this.props.itemsSource;
     const prevSection = this.props.section;
     const prevColumns = this.props.columns;
@@ -28,38 +29,42 @@ class Grid extends Component {
     const nextSection = nextProps.section;
     const nextColumns = nextProps.columns;
     const hasItemSource = grid.itemsSource.length;
+    const isNewSection = prevSection !== nextSection;
 
-    if (prevSection !== nextSection || this.isUpdated(prevColumns, nextColumns)) {
+    if (this.isUpdated(settings, nextProps.settings)) return true;
+
+    if (isNewSection || this.isUpdated(prevColumns, nextColumns)) {
       grid.columns.splice(0, grid.columns.length);
       nextProps.columns[nextSection].forEach(el => {
-        console.info(el);
         grid.columns.push(new wjGrid.Column(el));
       });
     }
 
-    if (
-      hasItemSource &&
-      JSON.stringify(nextItemSource) !== JSON.stringify(prevItemSource)
-    ) {
+    if (hasItemSource && this.isUpdated(nextItemSource, prevItemSource)) {
       if (prevItemSource.length !== nextItemSource.length) return true;
       nextItemSource.forEach(entry => {
         const itemCells = this.cellElements[entry.symbol];
         if (itemCells) {
           grid.columns.forEach(col => {
             const cell = itemCells[col.binding];
-            if (cell) cell.innerHTML = formatCell(cell, entry, col, true);
+            if (cell) {
+              if (settings.isCustomCells) {
+                cell.innerHTML = `<div>${formatCell(cell, entry, col, true)}</div>`;
+              } else {
+                cell.innerHTML = `<div>${cell.innerHTML}</div>`;
+              }
+            }
           });
         }
       });
-      return false;
+      return false; // skip update
     } else if (grid.itemsSource.length) {
-      return false;
+      return false; // skip update
     }
-    return true;
+    return true; // update component
   }
 
   handleUpdatingView = () => {
-    console.info('UpdatingView');
     this.clearCells = true; // clear cell elements on next formatItem
   };
 
@@ -71,6 +76,7 @@ class Grid extends Component {
   handleFormatItem = (gridPanel, cellRange) => {
     const { cell, col, row } = cellRange;
     const { rows, columns, cells } = gridPanel;
+    const { settings } = this.props;
 
     if (cellRange.panel === cells) {
       const column = columns[col];
@@ -90,7 +96,11 @@ class Grid extends Component {
         this.cellElements[item.symbol][column.binding] = cell;
 
         // custom painting
-        cell.innerHTML = formatCell(cell, item, column, false);
+        if (settings.isCustomCells) {
+          cell.innerHTML = `<div>${formatCell(cell, item, column, false)}</div>`;
+        } else {
+          cell.innerHTML = `<div>${cell.innerHTML}</div>`;
+        }
       }
     } else {
       cell.innerHTML = `<div>${cell.innerHTML}</div>`;
@@ -128,34 +138,52 @@ class Grid extends Component {
   };
 
   render() {
-    const { columns, section, itemsSource } = this.props;
+    const { columns, section, settings, itemsSource } = this.props;
     const columnsSection = columns[section];
-    console.info(columns[section]);
     return (
-      <FlexGrid
-        isReadOnly
-        className="Grid"
-        autoGenerateColumns={false}
-        columns={columnsSection}
-        itemsSource={itemsSource}
-        selectionMode="Row"
-        formatItem={(gridPanel, cellRange) => this.handleFormatItem(gridPanel, cellRange)}
-        initialized={gridPanel => this.handleInitialized(gridPanel)}
-        updatingView={() => this.handleUpdatingView()}
-      />
+      <div className="Grid">
+        {!itemsSource.length && (
+          <div className="Helper">
+            <PlaylistAdd className="Helper-icon" />
+            <div>Please add symbols to a list.</div>
+          </div>
+        )}
+        <FlexGrid
+          isReadOnly
+          className="FlexGrid"
+          selectionMode="Row"
+          autoGenerateColumns={false}
+          columns={columnsSection}
+          itemsSource={itemsSource}
+          frozenRows={settings.isFreezeFirstRow ? 1 : 0}
+          frozenColumns={settings.isFreezeFirstCol ? 1 : 0}
+          formatItem={(gridPanel, cellRange) => this.handleFormatItem(gridPanel, cellRange)}
+          initialized={gridPanel => this.handleInitialized(gridPanel)}
+          updatingView={() => this.handleUpdatingView()}
+        />
+      </div>
+
     );
   }
 }
 
 Grid.propTypes = {
-  section: PropTypes.oneOf(
-    AssetsTypes.OVERVIEW,
-    AssetsTypes.PERFORMANCE,
-    AssetsTypes.TECHNICAL,
-  ).isRequired,
+  section: PropTypes.oneOf([Assets.OVERVIEW, Assets.PERFORMANCE, Assets.TECHNICAL])
+    .isRequired,
   filter: PropTypes.string,
-  columns: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  columns: PropTypes.shape({
+    binding: PropTypes.string,
+    header: PropTypes.string,
+    visible: PropTypes.bool,
+  }).isRequired,
   itemsSource: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  settings: PropTypes.shape({
+    isCustomCells: PropTypes.bool,
+    isAutoUpdate: PropTypes.bool,
+    updateInterval: PropTypes.number,
+    isFreezeFirstRow: PropTypes.bool,
+    isFreezeFirstCol: PropTypes.bool,
+  }).isRequired,
 };
 
 Grid.defaultProps = {
