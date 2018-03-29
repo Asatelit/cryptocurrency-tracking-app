@@ -1,4 +1,15 @@
-.Settings-panel {
+.Settings {
+  right: -410px;
+  display: block;
+  position: fixed;
+  width: 400px;
+  height: 100%;
+  top: 0;
+  z-index: 100;
+  transition: all 200ms ease-in-out;
+}
+
+.Settings .Panel {
   box-sizing: border-box;
   box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
   border-left: 1px solid rgba(222, 227, 231, 0.56);
@@ -9,21 +20,15 @@
   width: 100%;
 }
 
-.Settings-body {
+.Settings .Panel-head {
+  padding: .5rem 1rem;
+  box-sizing: border-box;
+}
+
+.Settings .Panel-body {
   overflow: auto;
   flex: 1;
   padding: 1rem;
-}
-
-.Settings {
-  right: -410px;
-  display: block;
-  position: fixed;
-  width: 400px;
-  height: 100%;
-  top: 0;
-  z-index: 100;
-  transition: all 200ms ease-in-out;
 }
 
 .Settings--open {
@@ -39,5 +44,5 @@
 
 
 .Settings .FormGroup {
-  margin: 0 20px 10px;
+  margin: 0 1rem .5rem;
 }

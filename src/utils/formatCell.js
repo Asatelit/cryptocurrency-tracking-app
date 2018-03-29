@@ -107,7 +107,7 @@ export default function formatCell(cell, item, col, flare) {
       result = formatPerformanceIndicator(item, 'performanceYear3');
       break;
     case 'chg':
-      result = formatDynamicCell(cell, item, col, 'last', flare);
+      result = formatDynamicCell(cell, item, col, 'close', flare);
       break;
     default:
       result = wijmo.Globalize.format(item[col.binding], col.format);

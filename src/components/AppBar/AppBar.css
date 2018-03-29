@@ -27,6 +27,12 @@
   z-index: 1;
 }
 
+@media (min-width: 960px) {
+  .AppBar .Tab-label {
+    font-size: 1rem;
+  }
+}
+
 .AppBar .Title {
   margin-right: 1em;
 }

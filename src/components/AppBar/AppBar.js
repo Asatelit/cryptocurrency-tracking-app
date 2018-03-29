@@ -61,7 +61,7 @@ class AppBar extends Component {
             >
               {portfoliosList.map(portfolio => (
                 <Tab
-                  className="Tab"
+                  classes={{ root: 'Tab', label: 'Tab-label' }}
                   key={portfolio.name}
                   label={portfolio.name}
                   value={portfolio.name}

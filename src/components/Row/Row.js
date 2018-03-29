@@ -4,9 +4,10 @@ import cx from 'classnames';
 import './Row.css';
 
 const Row = props => {
-  const { horizontalAlignment, verticalAlignment } = props;
+  const { className, horizontalAlignment, verticalAlignment } = props;
   const cn = 'Row';
   const classes = cx(cn, {
+    [className]: Boolean(className),
     [`${cn}--left`]: horizontalAlignment === 'left',
     [`${cn}--right`]: horizontalAlignment === 'right',
     [`${cn}--center`]: horizontalAlignment === 'center',
@@ -26,6 +27,7 @@ const Row = props => {
 };
 
 Row.propTypes = {
+  className: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -43,6 +45,7 @@ Row.propTypes = {
 
 Row.defaultProps = {
   children: null,
+  className: null,
   horizontalAlignment: false,
   verticalAlignment: false,
 };

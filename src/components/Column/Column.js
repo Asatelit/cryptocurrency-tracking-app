@@ -4,9 +4,10 @@ import cx from 'classnames';
 import './Column.css';
 
 const Column = props => {
-  const { shrink, horizontalAlignment, verticalAlignment } = props;
+  const { className, shrink, horizontalAlignment, verticalAlignment } = props;
   const cn = 'Column';
   const classes = cx(cn, {
+    [className]: Boolean(className),
     [`${cn}--shrink`]: shrink,
     [`${cn}--left`]: horizontalAlignment === 'left',
     [`${cn}--right`]: horizontalAlignment === 'right',
@@ -23,6 +24,7 @@ const Column = props => {
 };
 
 Column.propTypes = {
+  className: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -34,6 +36,7 @@ Column.propTypes = {
 };
 
 Column.defaultProps = {
+  className: null,
   shrink: false,
   children: null,
   horizontalAlignment: 'left',

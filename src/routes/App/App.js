@@ -83,6 +83,7 @@ class App extends Component {
           isOpen={app.isSettingsPanelOpen}
           settings={app.settings}
           onUpdateSettings={appActions.updateSettings}
+          onClose={appActions.toggleSettingsPanel}
         />
         <div className="App-content">
           <div className="App-grid">

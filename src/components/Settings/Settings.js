@@ -3,14 +3,22 @@ import PropTypes from 'prop-types';
 /* Material UI */
 import { FormGroup, FormControlLabel, FormLabel } from 'material-ui/Form';
 import { MenuItem } from 'material-ui/Menu';
+import Divider from 'material-ui/Divider';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
 import Switch from 'material-ui/Switch';
 import Select from 'material-ui/Select';
+/* SVG Material icons */
+import CloseIcon from 'material-ui-icons/Close';
+/* Custom Components */
+import Row from '../Row';
+import Column from '../Column';
 /* CSS */
 import './Settings.css';
 
 class Settings extends Component {
+  handleClose = () => this.props.onClose();
   handleUpdateSettings = entry => {
-    console.info(entry);
     const { onUpdateSettings, settings } = this.props;
     onUpdateSettings({ ...settings, ...entry });
   };
@@ -19,7 +27,18 @@ class Settings extends Component {
     const { isOpen, settings } = this.props;
     return (
       <div className={`Settings ${isOpen ? 'Settings--open' : ''}`}>
-        <div className="Settings-panel">
+        <div className="Panel">
+          <Row className="Panel-head">
+            <Column>
+              <Typography variant="title">Settings</Typography>
+            </Column>
+            <Column shrink horizontalAlignment="right">
+              <IconButton onClick={this.handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Column>
+          </Row>
+          <Divider />
           <FormGroup className="FormGroup">
             <FormControlLabel
               label="Custom Cells"
@@ -100,6 +119,7 @@ class Settings extends Component {
 
 Settings.propTypes = {
   isOpen: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
   onUpdateSettings: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     isCustomCells: PropTypes.bool,
