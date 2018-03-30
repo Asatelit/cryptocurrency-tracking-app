@@ -18,13 +18,36 @@ import './Settings.css';
 
 class Settings extends Component {
   handleClose = () => this.props.onClose();
-  handleUpdateSettings = entry => {
-    const { onUpdateSettings, settings } = this.props;
-    onUpdateSettings({ ...settings, ...entry });
+  handleUpdateSettings = entry => this.props.onUpdateSettings(entry);
+
+  renderSwitch = params => {
+    const { label, isChecked, key } = params;
+    return (
+      <FormGroup className="FormGroup">
+        <FormControlLabel
+          label={label}
+          control={
+            <Switch
+              checked={isChecked}
+              onChange={event =>
+                this.handleUpdateSettings({ [key]: event.target.checked })
+              }
+            />
+          }
+        />
+      </FormGroup>
+    );
   };
 
   render() {
     const { isOpen, settings } = this.props;
+    const {
+      isCustomCells,
+      isAutoUpdate,
+      updateInterval,
+      isFreezeFirstRow,
+      isFreezeFirstCol,
+    } = settings;
     return (
       <div className={`Settings ${isOpen ? 'Settings--open' : ''}`}>
         <div className="Panel">
@@ -39,71 +62,35 @@ class Settings extends Component {
             </Column>
           </Row>
           <Divider />
-          <FormGroup className="FormGroup">
-            <FormControlLabel
-              label="Custom Cells"
-              control={
-                <Switch
-                  checked={settings.isCustomCells}
-                  onChange={event =>
-                    this.handleUpdateSettings({ isCustomCells: event.target.checked })
-                  }
-                />
-              }
-            />
-          </FormGroup>
-
-          <FormGroup className="FormGroup">
-            <FormControlLabel
-              label="Freeze First Row"
-              control={
-                <Switch
-                  checked={settings.isFreezeFirstRow}
-                  onChange={event =>
-                    this.handleUpdateSettings({ isFreezeFirstRow: event.target.checked })
-                  }
-                />
-              }
-            />
-          </FormGroup>
-
-          <FormGroup className="FormGroup">
-            <FormControlLabel
-              label="Freeze First Column"
-              control={
-                <Switch
-                  checked={settings.isFreezeFirstCol}
-                  onChange={event =>
-                    this.handleUpdateSettings({ isFreezeFirstCol: event.target.checked })
-                  }
-                />
-              }
-            />
-          </FormGroup>
-
-          <FormGroup className="FormGroup">
-            <FormControlLabel
-              label="Auto Update"
-              control={
-                <Switch
-                  checked={settings.isAutoUpdate}
-                  onChange={event =>
-                    this.handleUpdateSettings({ isAutoUpdate: event.target.checked })
-                  }
-                />
-              }
-            />
-          </FormGroup>
-
+          {this.renderSwitch({
+            key: 'isCustomCells',
+            label: 'Custom Cells',
+            isChecked: isCustomCells,
+          })};
+          {this.renderSwitch({
+            key: 'isFreezeFirstRow',
+            label: 'Freeze First Row',
+            isChecked: isFreezeFirstRow,
+          })};
+          {this.renderSwitch({
+            key: 'isFreezeFirstCol',
+            label: 'Freeze First Column',
+            isChecked: isFreezeFirstCol,
+          })};
+          {this.renderSwitch({
+            key: 'isAutoUpdate',
+            label: 'Auto Update',
+            isChecked: isAutoUpdate,
+          })};
           <FormGroup className="FormGroup">
             <FormLabel>Update Interval (s)</FormLabel>
             <Select
-              value={settings.updateInterval}
+              value={updateInterval}
               onChange={event =>
                 this.handleUpdateSettings({ updateInterval: event.target.value })
               }
             >
-              <MenuItem value={1000}>1</MenuItem>
+              <MenuItem value={3000}>3</MenuItem>
               <MenuItem value={5000}>5</MenuItem>
               <MenuItem value={10000}>10</MenuItem>
               <MenuItem value={20000}>20</MenuItem>

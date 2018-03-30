@@ -9,6 +9,22 @@
   overflow-x: auto;
 }
 
+.App *::-webkit-scrollbar-track {
+  background-color: transparent;
+  position: absolute;
+}
+
+.App *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+}
+
+.App *::-webkit-scrollbar-thumb {
+  background-color: #CCC;
+  border: 2px solid transparent;
+}
+
 .App-content {
   background: #FAFAFA;
   display: flex;

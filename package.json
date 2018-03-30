@@ -1,7 +1,12 @@
 {
   "name": "flexgrid-demo-app",
   "version": "0.1.0",
-  "private": true,
+  "author": "Yuri Kuschinsky",
+  "description": "A sample financial app for keeping track of the cryptocurrency market",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Asatelit/cryptocurrency-tracking-app.git"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -14,13 +19,13 @@
     "material-ui": "1.0.0-beta.37",
     "material-ui-icons": "1.0.0-beta.36",
     "prop-types": "15.6.1",
-    "react": "16.2.0",
-    "react-dom": "16.2.0",
+    "react": "16.3.0",
+    "react-dom": "16.3.0",
     "react-redux": "5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
     "redux": "3.7.2",
-    "redux-thunk": "^2.2.0",
+    "redux-thunk": "2.2.0",
     "wijmo": "5.20181.436"
   },
   "devDependencies": {

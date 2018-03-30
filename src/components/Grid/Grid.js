@@ -1,46 +1,43 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+/* Wijmo */
 import * as wjGrid from 'wijmo/wijmo.grid';
 import * as wjGridDetail from 'wijmo/wijmo.grid.detail';
 import { FlexGrid, FlexGridColumn } from 'wijmo/wijmo.react.grid';
-
+/* Material UI */
 import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
 import FilterList from 'material-ui-icons/FilterList';
-/* Custom Components */
-import DetailPanel from '../DetailPanel';
-
+/* Utils */
 import Assets from '../../constants/AssetsTypes';
 import formatCell from '../../utils/formatCell';
-
+/* Custom Components */
+import DetailPanel from '../DetailPanel';
+/* CSS */
 import './Grid.css';
-import './Wijmo.css';
+import './FlexGrid.css';
 
 class Grid extends Component {
-  cellElements = {};
-  clearCells = false;
-
   componentWillReceiveProps(nextProps) {
+    const { settings, itemsSource } = this.props;
     const isUpdated = (a, b) => JSON.stringify(a) !== JSON.stringify(b);
     const grid = window[Assets.WJ_GRID];
-    const { settings, itemsSource } = this.props;
     const nextItemSource = nextProps.itemsSource;
 
+    // Prevent rerender of the Wijmo FlexGrid
     if (isUpdated(nextItemSource, itemsSource)) {
       if (itemsSource.length !== nextItemSource.length) {
         grid.itemsSource = nextProps.itemsSource;
       } else {
         nextItemSource.forEach(entry => {
-          const itemCells = this.cellElements[entry.symbol];
-          if (itemCells) {
+          const element = this.cellElements[entry.symbol];
+          if (element) {
             grid.columns.forEach(col => {
-              const cell = itemCells[col.binding];
+              const cell = element[col.binding];
               if (cell) {
-                if (settings.isCustomCells) {
-                  cell.innerHTML = `<div>${formatCell(cell, entry, col, true)}</div>`;
-                } else {
-                  cell.innerHTML = `<div>${cell.innerHTML}</div>`;
-                }
+                cell.innerHTML = settings.isCustomCells
+                  ? `<div>${formatCell(cell, entry, col, true)}</div>`
+                  : `<div>${cell.innerHTML}</div>`;
               }
             });
           }
@@ -49,6 +46,13 @@ class Grid extends Component {
     }
   }
 
+  cellElements = {}; // stored cell elements
+  clearCells = false;
+
+  /**
+   * Occurs after the grid has updated its internal layout
+   * @arg {Object] [event] - Event data.
+   */
   handleUpdatingView = () => {
     this.clearCells = true; // clear cell elements on next formatItem
   };
@@ -63,7 +67,9 @@ class Grid extends Component {
     const { rows, columns, cells } = gridPanel;
     const { settings } = this.props;
 
-    if (cellRange.panel === cells) {
+    if (cellRange.panel !== cells) {
+      cell.innerHTML = `<div>${cell.innerHTML}</div>`;
+    } else {
       const column = columns[col];
       const item = rows[row].dataItem;
 
@@ -75,46 +81,36 @@ class Grid extends Component {
 
       if (item) {
         // store cell element
-        if (!this.cellElements[item.symbol]) {
-          this.cellElements[item.symbol] = { item };
-        }
+        if (!this.cellElements[item.symbol]) this.cellElements[item.symbol] = { item };
         this.cellElements[item.symbol][column.binding] = cell;
-
         // custom painting
-        if (settings.isCustomCells) {
-          cell.innerHTML = `<div>${formatCell(cell, item, column, false)}</div>`;
-        } else {
-          cell.innerHTML = `<div>${cell.innerHTML}</div>`;
-        }
+        cell.innerHTML = settings.isCustomCells
+          ? `<div>${formatCell(cell, item, column, false)}</div>`
+          : `<div>${cell.innerHTML}</div>`;
       }
-    } else {
-      cell.innerHTML = `<div>${cell.innerHTML}</div>`;
     }
   };
 
   /**
-   * Occurs after the grid rows have been bound to items in the data source.
+   * Occurs after the grid have been initialized.
    * @arg {Object] gridPanel - GridPanel that contains the range.
    */
   handleInitialized = gridPanel => {
     const grid = gridPanel;
     const { itemsSource } = this.props;
-    const detailProvider = new wjGridDetail.FlexGridDetailProvider(grid, {});
 
+    // Sets the array that contains items shown on the grid.
     grid.itemsSource = itemsSource;
+
+    // TODO: get rid of using the global scope
     window[Assets.WJ_GRID] = grid;
 
+    // Create detail provider
+    const detailProvider = new wjGridDetail.FlexGridDetailProvider(grid, {});
     detailProvider.createDetailCell = row => {
-      const { dataItem } = row;
       const detailCell = document.createElement('div');
-
-      ReactDOM.render(
-        <div className="DetailCell">
-          <DetailPanel dataItem={dataItem} />
-        </div>,
-        detailCell,
-      );
-
+      // Attach detail panel
+      ReactDOM.render(<DetailPanel dataItem={row.dataItem} />, detailCell);
       return detailCell;
     };
   };
@@ -137,7 +133,7 @@ class Grid extends Component {
 
   render() {
     const { columns, section, settings, filter, itemsSource } = this.props;
-    const columnsSection = columns[section];
+    const columnsData = columns[section];
     return (
       <div className="Grid">
         {!itemsSource.length && this.renderNotification(filter)}
@@ -154,7 +150,7 @@ class Grid extends Component {
           initialized={this.handleInitialized}
           updatingView={this.handleUpdatingView}
         >
-          {columnsSection.map((column, index) => (
+          {columnsData.map((column, index) => (
             <FlexGridColumn key={column.binding || index} {...column} />
           ))}
         </FlexGrid>
@@ -163,16 +159,22 @@ class Grid extends Component {
   }
 }
 
+// prettier-ignore
 Grid.propTypes = {
-  section: PropTypes.oneOf([Assets.OVERVIEW, Assets.PERFORMANCE, Assets.TECHNICAL])
-    .isRequired,
   filter: PropTypes.string,
+  section: PropTypes.oneOf([
+    Assets.OVERVIEW,
+    Assets.PERFORMANCE,
+    Assets.TECHNICAL
+  ]).isRequired,
   columns: PropTypes.shape({
     binding: PropTypes.string,
     header: PropTypes.string,
     visible: PropTypes.bool,
   }).isRequired,
-  itemsSource: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  itemsSource: PropTypes.arrayOf(
+    PropTypes.shape
+  ).isRequired,
   settings: PropTypes.shape({
     isCustomCells: PropTypes.bool,
     isAutoUpdate: PropTypes.bool,

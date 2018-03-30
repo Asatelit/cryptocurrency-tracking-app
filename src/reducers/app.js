@@ -60,6 +60,6 @@ export default createReducer(initialState, {
 
   [Action.UPDATE_SETTINGS]: (state, payload) => ({
     ...state,
-    settings: payload,
+    settings: { ...state.settings, ...payload },
   }),
 });

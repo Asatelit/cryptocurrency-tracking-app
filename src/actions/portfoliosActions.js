@@ -22,7 +22,7 @@ export function getPortfoliosList() {
 }
 
 /**
- * Add portfolio
+ * Add a portfolio
  * @arg {string] name - The name of the portfolio
  */
 export function addPortfolio(name) {
@@ -48,7 +48,7 @@ export function editPortfolio(portfolio) {
 }
 
 /**
- * Delete portfolio
+ * Delete portfolio and update trading data
  * @arg {string] name - The name of the portfolio
  */
 export function deletePortfolio(name) {

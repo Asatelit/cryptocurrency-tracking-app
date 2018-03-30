@@ -5,9 +5,9 @@ import { selectPortfolio, editPortfolio } from './portfoliosActions';
 import { getTradingData, getTickers } from './dataActions';
 
 /**
- * Get initial trading data
+ * Request trading market data
  */
-export function getInitialState() {
+export function requestTradingData() {
   return (dispatch, getStore) => {
     fetch('./coinmarketcap-top20.json')
       .then(response => response.json())
@@ -76,6 +76,10 @@ export function changeColumnsVisibility(binding, visibility) {
   };
 }
 
+/**
+ * Set filter text
+ * @arg {string} str
+ */
 export function changeFilterText(str) {
   return {
     type: ActionTypes.CHANGE_FILTER_TEXT,
@@ -104,7 +108,7 @@ export function openAddDialog() {
 }
 
 /**
- * Open Add Portfolio dialog
+ * Close Add Portfolio dialog
  */
 export function closeAddDialog() {
   return {
@@ -140,7 +144,7 @@ export function openSymbolsDialog() {
 }
 
 /**
- * Close Edit Portfolios dialog
+ * Close Symbols dialog
  */
 export function closeSymbolsDialog() {
   return {
@@ -149,7 +153,7 @@ export function closeSymbolsDialog() {
 }
 
 /**
- * Close Edit Portfolios dialog
+ * Toggle Symbols dialog
  */
 export function toggleSettingsPanel() {
   return {

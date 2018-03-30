@@ -7,6 +7,7 @@ import { FlexChartRangeSelector } from 'wijmo/wijmo.react.chart.interaction';
 /* CSS */
 import './Chart.css';
 
+/* React components that encapsulate Wijmo FlexChart */
 class Chart extends Component {
   state = { axisMin: null, axisMax: null };
 
@@ -14,8 +15,6 @@ class Chart extends Component {
     const { axisMin, axisMax } = this.state;
     const nextAxisMin = nextState.axisMin;
     const nextAxisMax = nextState.axisMax;
-    console.info(axisMin !== nextAxisMin || axisMax !== nextAxisMax);
-    console.info(nextState);
     return axisMin !== nextAxisMin || axisMax !== nextAxisMax;
   }
 
@@ -26,21 +25,20 @@ class Chart extends Component {
    * @arg {function] hitTestInfo - Function that provides the default rendering for the item.
    */
   handleItemFormatter = (engine, hitTestInfo, defaultFormat) => {
+    const { chartElement, series, pointIndex } = hitTestInfo;
     const formatterEngine = engine;
-    const ht = hitTestInfo;
     const tradeBinding = 'high,low,open,close';
-    const volumeBinding = 'volume';
+    const binding = 'volume';
 
-    if (ht.pointIndex >= 0 && ht.chartElement === wjChart.ChartElement.SeriesSymbol) {
-      if (ht.series.binding === tradeBinding || ht.series.binding === volumeBinding) {
+    if (pointIndex >= 0 && chartElement === wjChart.ChartElement.SeriesSymbol) {
+      if (series.binding === tradeBinding || series.binding === binding) {
         // get current and previous values
-        const { chart } = ht.series;
+        const { chart } = series;
         const { items } = chart.collectionView;
-        const valNow = items[ht.pointIndex].close;
-        const valPrev = items[ht.pointIndex - 1]
-          ? items[ht.pointIndex - 1].close
-          : valNow;
+        const valNow = items[pointIndex].close;
+        const valPrev = items[pointIndex - 1] ? items[pointIndex - 1].close : valNow;
 
+        // Set default width of the stroke
         formatterEngine.strokeWidth = '1px';
 
         if (valNow > valPrev) {
@@ -48,8 +46,7 @@ class Chart extends Component {
           formatterEngine.stroke = '#CB2C77';
         } else {
           formatterEngine.stroke = '#73CA21';
-          formatterEngine.fill =
-            ht.series.binding === volumeBinding ? '#73CA21' : 'white';
+          formatterEngine.fill = series.binding === binding ? '#73CA21' : 'white';
         }
       }
     }

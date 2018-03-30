@@ -1,31 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* Material UI */
-import Typography from 'material-ui/Typography';
 import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table';
+import Typography from 'material-ui/Typography';
 /* SVG Material icons */
 import ArrowUpwardIcon from 'material-ui-icons/ArrowUpward';
 import ArrowDownwardIcon from 'material-ui-icons/ArrowDownward';
 /* Custom Components */
 import Chart from '../Chart';
-import Row from '../Row';
 import Column from '../Column';
+import Row from '../Row';
 /* CSS */
 import './DetailPanel.css';
 
 class DetailPanel extends Component {
   renderSummaryRows = data => {
+    const { time, volume, open, close, history, performanceYear } = data;
     const priceHistory = data.history.map(el => el.close);
     const rangeMin = Math.min(...priceHistory).toFixed(2);
     const rangeMax = Math.max(...priceHistory).toFixed(2);
     const summary = [
-      { name: 'Time', value: data.time.toTimeString() },
-      { name: 'Volume', value: data.volume.toFixed(2) },
-      { name: 'Open', value: data.open.toFixed(2) },
-      { name: 'Close', value: data.close.toFixed(2) },
-      { name: 'Prev. Open', value: data.history[0].open.toFixed(2) },
-      { name: 'Prev. Close', value: data.history[0].close.toFixed(2) },
-      { name: '1-Year Change', value: `${data.performanceYear.toFixed(2)}%` },
+      { name: 'Time', value: time.toTimeString() },
+      { name: 'Volume', value: volume.toFixed(2) },
+      { name: 'Open', value: open.toFixed(2) },
+      { name: 'Close', value: close.toFixed(2) },
+      { name: 'Prev. Open', value: history[0].open.toFixed(2) },
+      { name: 'Prev. Close', value: history[0].close.toFixed(2) },
+      { name: '1-Year Change', value: `${performanceYear.toFixed(2)}%` },
       { name: 'Range', value: `${rangeMin} - ${rangeMax}` },
     ];
     return (
@@ -73,7 +74,12 @@ class DetailPanel extends Component {
 
 DetailPanel.propTypes = {
   dataItem: PropTypes.shape({
+    close: PropTypes.number,
     history: PropTypes.array,
+    open: PropTypes.number,
+    performanceYear: PropTypes.number,
+    time: PropTypes.any,
+    volume: PropTypes.number,
   }).isRequired,
 };
 
