@@ -8,7 +8,7 @@ import { FlexGrid, FlexGridColumn } from 'wijmo/wijmo.react.grid';
 import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
 import FilterList from 'material-ui-icons/FilterList';
 /* Custom Components */
-import Chart from '../Chart';
+import DetailPanel from '../DetailPanel';
 
 import Assets from '../../constants/AssetsTypes';
 import formatCell from '../../utils/formatCell';
@@ -110,7 +110,7 @@ class Grid extends Component {
 
       ReactDOM.render(
         <div className="DetailCell">
-          <Chart dataItem={dataItem} />
+          <DetailPanel dataItem={dataItem} />
         </div>,
         detailCell,
       );

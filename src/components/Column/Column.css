@@ -19,3 +19,11 @@
 .Column--middle { align-items: center; }
 .Column--bottom { align-items: flex-end; }
 .Column--stretch { align-items: stretch; }
+
+.Column--dir-row { flex-direction: row; }
+.Column--dir-row-reverse { flex-direction: row-reverse; }
+.Column--dir-column { flex-direction: column; }
+.Column--dir-column-reverse { flex-direction: column-reverse; }
+.Column--dir-inherit { flex-direction: inherit; }
+.Column--dir-initial { flex-direction: initial; }
+.Column--dir-unset { flex-direction: unset; }

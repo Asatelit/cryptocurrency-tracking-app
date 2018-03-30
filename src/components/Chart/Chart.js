@@ -25,11 +25,12 @@ class Chart extends Component {
    * @arg {Object] hitTestInfo - Parameter that describes the element being rendered.
    * @arg {function] hitTestInfo - Function that provides the default rendering for the item.
    */
-  itemFormatter = (engine, hitTestInfo, defaultFormat) => {
+  handleItemFormatter = (engine, hitTestInfo, defaultFormat) => {
     const formatterEngine = engine;
     const ht = hitTestInfo;
     const tradeBinding = 'high,low,open,close';
     const volumeBinding = 'volume';
+
     if (ht.pointIndex >= 0 && ht.chartElement === wjChart.ChartElement.SeriesSymbol) {
       if (ht.series.binding === tradeBinding || ht.series.binding === volumeBinding) {
         // get current and previous values
@@ -43,11 +44,12 @@ class Chart extends Component {
         formatterEngine.strokeWidth = '1px';
 
         if (valNow > valPrev) {
-          formatterEngine.fill = 'red';
-          formatterEngine.stroke = 'red';
+          formatterEngine.fill = '#CB2C77';
+          formatterEngine.stroke = '#CB2C77';
         } else {
-          formatterEngine.fill = ht.series.binding === volumeBinding ? 'green' : 'white';
-          formatterEngine.stroke = 'green';
+          formatterEngine.stroke = '#73CA21';
+          formatterEngine.fill =
+            ht.series.binding === volumeBinding ? '#73CA21' : 'white';
         }
       }
     }
@@ -68,28 +70,28 @@ class Chart extends Component {
     return (
       <div className="Chart">
         <FlexChart
-          axisX={{ min: axisMin, max: axisMax }}
+          className="FlexChart"
           bindingX="time"
           chartType={wjChart.ChartType.Candlestick}
-          itemFormatter={this.itemFormatter}
-          itemsSource={dataItem.history}
-          legend={{ position: wjChart.Position.None }}
           selectionMode={wjChart.SelectionMode.Point}
+          itemsSource={dataItem.history}
           series={[{ binding: 'high,low,open,close' }]}
+          axisX={{ position: wjChart.Position.None, min: axisMin, max: axisMax }}
+          legend={{ position: wjChart.Position.None }}
+          itemFormatter={this.handleItemFormatter}
         />
         <FlexChart
+          className="DataRange"
+          bindingX="time"
+          plotMargin="6 0 6 80"
+          itemsSource={dataItem.history}
+          series={[{ binding: 'volume' }]}
           axisX={{ position: wjChart.Position.None }}
           axisY={{ position: wjChart.Position.None }}
-          bindingX="time"
-          itemFormatter={this.itemFormatter}
-          itemsSource={dataItem.history}
           legend={{ position: wjChart.Position.None }}
-          plotMargin="6 20"
-          series={[{ binding: 'volume' }]}
+          itemFormatter={this.handleItemFormatter}
         >
           <FlexChartRangeSelector
-            minScale={0.35}
-            maxScale={0.36}
             rangeChanged={this.handleRangeChanged}
             initialized={this.handleRangeChanged}
           />

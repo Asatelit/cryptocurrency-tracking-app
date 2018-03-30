@@ -8,7 +8,7 @@ const initialState = {
     [Assets.OVERVIEW]: [
       { binding: 'name', header: 'Name', width: 220, allowDragging: false, visible: true },
       { binding: 'open', header: 'Open', format: 'n2', width: 160, allowSorting: true, visible: true },
-      { binding: 'close', header: 'Last', format: 'n2', width: 160, allowSorting: true, visible: true },
+      { binding: 'close', header: 'Close', format: 'n2', width: 160, allowSorting: true, visible: true },
       { binding: 'high', header: 'High', format: 'n2', width: 160, allowSorting: true, visible: true },
       { binding: 'low', header: 'Low', format: 'n2', width: 160, allowSorting: true, visible: true },
       { binding: 'chg', header: 'Chg.', format: 'n2', align: 'center', width: 300, allowSorting: true, visible: true },

@@ -44,6 +44,7 @@ export default createReducer(initialState, {
    */
   [Action.DELETE_PORTFOLIO]: (state, payload) => {
     const list = state.list.filter(portfolio => portfolio.name !== payload);
+
     return {
       ...state,
       list,

@@ -1,0 +1,26 @@
+.Chart {
+  width: 100%;
+}
+
+.Chart .FlexChart {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: transparent;
+  box-sizing: padding-box;
+}
+
+.Chart .FlexChart .wj-axis-y {
+  opacity: .25;
+}
+
+.Chart .DataRange {
+  max-height: 40px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: transparent;
+  background: transparent;
+  box-sizing: padding-box;
+}

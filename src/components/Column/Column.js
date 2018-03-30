@@ -4,20 +4,20 @@ import cx from 'classnames';
 import './Column.css';
 
 const Column = props => {
-  const { className, shrink, horizontalAlignment, verticalAlignment } = props;
+  const {
+    className,
+    shrink,
+    horizontalAlignment,
+    verticalAlignment,
+    flexDirection,
+  } = props;
   const cn = 'Column';
   const classes = cx(cn, {
     [className]: Boolean(className),
     [`${cn}--shrink`]: shrink,
-    [`${cn}--left`]: horizontalAlignment === 'left',
-    [`${cn}--right`]: horizontalAlignment === 'right',
-    [`${cn}--center`]: horizontalAlignment === 'center',
-    [`${cn}--justify`]: horizontalAlignment === 'justify',
-    [`${cn}--spaced`]: horizontalAlignment === 'spaced',
-    [`${cn}--top`]: verticalAlignment === 'top',
-    [`${cn}--middle`]: verticalAlignment === 'middle',
-    [`${cn}--bottom`]: verticalAlignment === 'bottom',
-    [`${cn}--stretch`]: verticalAlignment === 'stretch',
+    [`${cn}--${horizontalAlignment}`]: horizontalAlignment,
+    [`${cn}--${verticalAlignment}`]: verticalAlignment,
+    [`${cn}--dir-${flexDirection}`]: flexDirection,
   });
 
   return <div className={classes}>{props.children}</div>;
@@ -31,6 +31,15 @@ Column.propTypes = {
     PropTypes.string,
   ]),
   shrink: PropTypes.bool,
+  flexDirection: PropTypes.oneOf([
+    'row',
+    'row-reverse',
+    'column',
+    'column-reverse',
+    'inherit',
+    'initial',
+    'unset',
+  ]),
   horizontalAlignment: PropTypes.oneOf(['left', 'right', 'center', 'justify', 'spaced']),
   verticalAlignment: PropTypes.oneOf(['top', 'middle', 'bottom', 'stretch']),
 };
@@ -39,6 +48,7 @@ Column.defaultProps = {
   className: null,
   shrink: false,
   children: null,
+  flexDirection: 'row',
   horizontalAlignment: 'left',
   verticalAlignment: 'middle',
 };

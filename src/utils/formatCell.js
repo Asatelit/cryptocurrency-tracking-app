@@ -6,27 +6,27 @@ function scaleY(value, min, max) {
 
 // generate sparklines as SVG
 function getSparklines(data) {
-  const min = Math.min.apply(Math, data);
-  const max = Math.max.apply(Math, data);
-  let svg = '';
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const svg = [];
   let x1 = 0;
   let y1 = scaleY(data[0], min, max);
   for (let i = 1; i < data.length; i += 1) {
     const x2 = Math.round(i / (data.length - 1) * 100);
     const y2 = scaleY(data[i], min, max);
-    svg += `<line x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%" />`;
+    svg.push(`<line x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%" />`);
     x1 = x2;
     y1 = y2;
   }
-  return `<svg><g>${svg}</g></svg>`;
+  return `<svg><g>${svg.join()}</g></svg>`;
 }
 
 function formatDynamicCell(cell, item, col, history, flare) {
-  const hist = item.history.slice(-6).map(element => element[history]);
-  const chg = hist.length > 1 ? hist[hist.length - 1] / hist[hist.length - 2] - 1 : 0;
-  const value = wijmo.Globalize.format(item[col.binding], col.format);
-  const change = `${wijmo.Globalize.format(chg * 100, 'n1')}%`;
-  const glyph = chg > +0.001 ? 'up' : chg < -0.001 ? 'down' : 'circle'; // up/down glyph
+  const tradeHistory = [...item.history].splice(0, 10); // get last 10 elements
+  tradeHistory.reverse();
+  const hist = tradeHistory.map(element => element[history]);
+  const change = `${wijmo.Globalize.format(item.chg / item.open * 100, 'n1')}%`;
+  const glyph = item.chg > +0.001 ? 'up' : item.chg < -0.001 ? 'down' : 'circle'; // up/down glyph
   const spark = getSparklines(hist); // sparklines
   const dir = glyph === 'circle' ? 'none' : glyph; // change direction
   const flareDir = flare ? dir : 'none'; // // flare direction
@@ -34,7 +34,6 @@ function formatDynamicCell(cell, item, col, history, flare) {
   // cell template
   return [
     `<div class="ticker chg-${dir} flare-${flareDir}">`,
-    `<div class="value">${value}</div>`,
     `<div class="chg">${change}</div>`,
     `<div class="glyph"><span class="wj-glyph-${glyph}"/></div>`,
     `<div class="spark">${spark}</div>`,

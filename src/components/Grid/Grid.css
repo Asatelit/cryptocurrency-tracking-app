@@ -105,18 +105,6 @@
   color: green;
 }
 
-
-.Grid .wj-flexchart {
-  box-sizing: border-box;
-  width: 50%;
-  padding: 0;
-  margin: 0;
-}
-
-.Grid .wj-flexchart:last-child {
-  max-height: 40px;
-}
-
 .Grid .FlexGrid .wj-header.wj-cell {
   color: inherit;
   background: #FFF;
@@ -132,6 +120,12 @@
   border-bottom: 1px solid #E6E6E6;
   padding: .5rem;
 }
+
+.Grid .FlexGrid .wj-detail {
+  padding: 0;
+  outline: none;
+}
+
 
 .Grid .FlexGrid .wj-rowheaders .wj-cell.wj-header {
   padding: 1rem .5rem;

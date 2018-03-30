@@ -1,4 +1,5 @@
 import ActionTypes from '../constants/ActionTypes';
+import { changeCurrentPortfolio } from './appActions';
 
 /**
  * Changes the selected portfolio
@@ -51,8 +52,12 @@ export function editPortfolio(portfolio) {
  * @arg {string] name - The name of the portfolio
  */
 export function deletePortfolio(name) {
-  return {
-    type: ActionTypes.DELETE_PORTFOLIO,
-    payload: name,
+  return (dispatch, getStore) => {
+    dispatch({
+      type: ActionTypes.DELETE_PORTFOLIO,
+      payload: name,
+    });
+    const { selected } = getStore().portfolios;
+    dispatch(changeCurrentPortfolio(selected));
   };
 }
