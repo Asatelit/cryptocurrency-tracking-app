@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/asatelit/cryptocurrency-tracking-app/master/doc/images/cryptocurrency-tracking-app.jpg)
+
 # Cryptocurrency Tracking App
 
 A sample financial app for keeping track of the cryptocurrency market built on top of React, Redux,
