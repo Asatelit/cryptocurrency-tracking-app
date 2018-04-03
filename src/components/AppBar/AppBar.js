@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-
 /* Material UI */
 import Tabs, { Tab } from 'material-ui/Tabs';
 import IconButton from 'material-ui/IconButton';
-
-/* SVG Material icons */
+/* SVG Material Icons */
 import SettingsIcon from 'material-ui-icons/Settings';
 import MenuIcon from 'material-ui-icons/Menu';
 import AddIcon from 'material-ui-icons/Add';
 import Typography from 'material-ui/Typography';
-
+/* Custom Components */
 import Row from '../../components/Row';
 import Column from '../../components/Column';
+/* CSS */
 import './AppBar.css';
 
 class AppBar extends Component {
@@ -22,8 +21,33 @@ class AppBar extends Component {
   handleOpenSettings = () => this.props.onOpenSettings();
   handleChangeTab = (event, value) => this.props.onChangeTab(value);
 
+  renderButton = actions => (
+    <Fragment>
+      {actions.map(action => (
+        <IconButton
+          className="IconButton"
+          color="inherit"
+          key={action.key}
+          aria-label={action.label}
+          onClick={action.handler}
+        >
+          {action.icon}
+        </IconButton>
+      ))}
+    </Fragment>
+  );
+
   render() {
     const { selectedPortfolio, portfoliosList, isCollapsed } = this.props;
+    // prettier-ignore
+    const mainActions = [
+      { key: 'add', label: 'Add a portfolio', handler: this.handleOpenAddDialog, icon: <AddIcon /> },
+      { key: 'edit', label: 'Edit portfolios', handler: this.handleOpenEditDialog, icon: <MenuIcon /> },
+    ];
+    // prettier-ignore
+    const additionalActions = [
+      { key: 'settings', label: 'Settings', handler: this.handleOpenSettings, icon: <SettingsIcon /> },
+    ];
     return (
       <div className={`AppBar ${isCollapsed ? 'AppBar--collapsed' : ''}`}>
         <Row>
@@ -31,33 +55,18 @@ class AppBar extends Component {
             <Typography className="Title" variant="title" color="inherit">
               Portfolio & Watchlist
             </Typography>
-            <IconButton
-              className="IconButton"
-              color="inherit"
-              aria-label="Add Portfolio"
-              onClick={this.handleOpenAddDialog}
-            >
-              <AddIcon />
-            </IconButton>
-            <IconButton
-              className="IconButton"
-              color="inherit"
-              aria-label="Edit Portfolios"
-              onClick={this.handleOpenEditDialog}
-            >
-              <MenuIcon />
-            </IconButton>
+            {this.renderButton(mainActions)}
           </Column>
           <Column>
             <Tabs
-              className="Tabs"
-              classes={{ indicator: 'TabsIndicator' }}
-              onChange={this.handleChangeTab}
-              value={selectedPortfolio}
               scrollable
+              className="Tabs"
               scrollButtons="auto"
               indicatorColor="primary"
               textColor="inherit"
+              classes={{ indicator: 'TabsIndicator' }}
+              onChange={this.handleChangeTab}
+              value={selectedPortfolio}
             >
               {portfoliosList.map(portfolio => (
                 <Tab
@@ -70,14 +79,7 @@ class AppBar extends Component {
             </Tabs>
           </Column>
           <Column shrink horizontalAlignment="right">
-            <IconButton
-              className="IconButton"
-              color="inherit"
-              aria-label="Settings"
-              onClick={this.handleOpenSettings}
-            >
-              <SettingsIcon />
-            </IconButton>
+            {this.renderButton(additionalActions)}
           </Column>
         </Row>
       </div>

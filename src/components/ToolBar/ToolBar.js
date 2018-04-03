@@ -7,7 +7,8 @@ import Menu from 'material-ui/Menu';
 import Button from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
 /* SVG Material icons */
-import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
+import PlayListIcon from 'material-ui-icons/PlaylistAdd';
+import RefreshIcon from 'material-ui-icons/Refresh';
 import PrintIcon from 'material-ui-icons/Print';
 import DownloadIcon from 'material-ui-icons/FileDownload';
 import HideIcon from 'material-ui-icons/VisibilityOff';
@@ -21,7 +22,8 @@ import './ToolBar.css';
 class ToolBar extends Component {
   state = { columnsVisibilityMenu: null };
 
-  handleOnAddSymbol = () => this.props.onAddSymbols();
+  handleAddSymbol = () => this.props.onAddSymbols();
+  handleRefresh = () => this.props.onRefresh();
   handlePrint = () => this.props.onPrint();
   handleDownload = () => this.props.onDownload();
   handleChangeColumn = (event, binding) =>
@@ -38,9 +40,13 @@ class ToolBar extends Component {
             <Typography className="Caption" variant="caption">
               Symbols
             </Typography>
-            <Button color="inherit" onClick={this.handleOnAddSymbol}>
-              <PlaylistAdd />
+            <Button color="inherit" onClick={this.handleAddSymbol}>
+              <PlayListIcon />
               <span className="Button-label">Symbols</span>
+            </Button>
+            <Button color="inherit" onClick={this.handleRefresh}>
+              <RefreshIcon />
+              <span className="Button-label">Refresh</span>
             </Button>
             <div>
               <Button
@@ -99,6 +105,7 @@ class ToolBar extends Component {
 ToolBar.propTypes = {
   onAddSymbols: PropTypes.func.isRequired,
   onHideField: PropTypes.func.isRequired,
+  onRefresh: PropTypes.func.isRequired,
   onPrint: PropTypes.func.isRequired,
   onDownload: PropTypes.func.isRequired,
   columns: PropTypes.shape({

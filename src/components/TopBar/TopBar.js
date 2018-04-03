@@ -17,58 +17,69 @@ class TopBar extends Component {
   handleChangeFilterText = str => this.props.onChangeFilterText(str);
   handleChangeTab = (event, value) => this.props.onChangeTab(value);
 
+  renderTabs = () => {
+    const tabs = [
+      { label: 'Overview', value: AssetsTypes.OVERVIEW },
+      { label: 'Technical', value: AssetsTypes.TECHNICAL },
+      { label: 'Performance', value: AssetsTypes.PERFORMANCE },
+    ];
+    return (
+      <Tabs
+        className="Tabs"
+        textColor="inherit"
+        classes={{ indicator: 'TabsIndicator' }}
+        value={this.props.selectedTab}
+        onChange={this.handleChangeTab}
+      >
+        {tabs.map(tab => (
+          <Tab
+            classes={{ root: 'Tab' }}
+            key={tab.value}
+            label={tab.label}
+            value={tab.value}
+          />
+        ))}
+      </Tabs>
+    );
+  };
+
+  renderFilterBox = () => {
+    const { filter } = this.props;
+    return (
+      <div className="Filter">
+        <div className="Filter-searchIcon">
+          <SearchIcon />
+        </div>
+        <input
+          className="Filter-input"
+          placeholder="Type a symbol name to filter"
+          value={filter}
+          onChange={event =>
+            this.handleChangeFilterText(event.target.value.toLowerCase())
+          }
+        />
+        {Boolean(filter) && (
+          <IconButton
+            className="Filter-clearIcon"
+            onClick={() => this.handleChangeFilterText('')}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+      </div>
+    );
+  };
+
+  // prettier-ignore
   render() {
-    const { selectedTab, filter } = this.props;
     return (
       <div className="TopBar">
         <Row verticalAlignment="stretch">
           <Column verticalAlignment="stretch">
-            <Tabs
-              className="Tabs"
-              textColor="inherit"
-              classes={{ indicator: 'TabsIndicator' }}
-              value={selectedTab}
-              onChange={this.handleChangeTab}
-            >
-              <Tab
-                classes={{ root: 'Tab' }}
-                label="Overview"
-                value={AssetsTypes.OVERVIEW}
-              />
-              <Tab
-                classes={{ root: 'Tab' }}
-                label="Technical"
-                value={AssetsTypes.TECHNICAL}
-              />
-              <Tab
-                classes={{ root: 'Tab' }}
-                label="Performance"
-                value={AssetsTypes.PERFORMANCE}
-              />
-            </Tabs>
+            {this.renderTabs()}
           </Column>
           <Column shrink>
-            <div className="Filter">
-              <div className="Filter-searchIcon">
-                <SearchIcon />
-              </div>
-              <input
-                className="Filter-input"
-                placeholder="Type a symbol name to filter"
-                value={filter}
-                onChange={event =>
-                  this.handleChangeFilterText(event.target.value.toLowerCase())
-                }
-              />
-              {!!filter.length && (
-                <IconButton
-                  className="Filter-clearIcon"
-                  onClick={() => this.handleChangeFilterText('')}
-                >
-                  <CloseIcon />
-                </IconButton>
-              )}
-            </div>
+            {this.renderFilterBox()}
           </Column>
         </Row>
       </div>

@@ -9,14 +9,18 @@ const initialState = {
   isSymbolsDialogOpen: false,
   gridSection: Assets.OVERVIEW,
   settings: {
-    isCustomCells: true,
     isAutoUpdate: true,
-    updateInterval: 30000,
-    isFreezeFirstRow: false,
+    isCustomCells: true,
     isFreezeFirstCol: false,
+    isFreezeFirstRow: false,
+    rowHeight: 60,
+    updateInterval: 30000,
   },
 };
 
+/**
+ * ## App Reducers
+ */
 export default createReducer(initialState, {
   [Action.OPEN_ADD_DIALOG]: state => ({
     ...state,

@@ -72,12 +72,16 @@
 
 .FlexGrid .wj-detail {
   padding: 0;
-  outline: none;
 }
 
 .FlexGrid .wj-rowheaders .wj-cell.wj-header {
   padding: 1rem .5rem;
   background: #fbfbfb;
+}
+
+.FlexGrid .wj-rowheaders .wj-glyph-plus,
+.FlexGrid .wj-rowheaders .wj-glyph-minus {
+  top: calc(50% - 16px);
 }
 
 .FlexGrid .wj-cell.wj-frozen-row {

@@ -11,13 +11,6 @@ import './Chart.css';
 class Chart extends Component {
   state = { axisMin: null, axisMax: null };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { axisMin, axisMax } = this.state;
-    const nextAxisMin = nextState.axisMin;
-    const nextAxisMax = nextState.axisMax;
-    return axisMin !== nextAxisMin || axisMax !== nextAxisMax;
-  }
-
   /**
    * Gets or sets the item formatter function that allows you to customize the appearance of the chart elements.
    * @arg {Object] engine - The chart's IRenderEngine responsible for rendering elements on the chart.

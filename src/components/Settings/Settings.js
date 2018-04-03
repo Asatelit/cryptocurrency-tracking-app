@@ -23,7 +23,7 @@ class Settings extends Component {
   renderSwitch = params => {
     const { label, isChecked, key } = params;
     return (
-      <FormGroup className="FormGroup">
+      <FormGroup key={key} className="FormGroup">
         <FormControlLabel
           label={label}
           control={
@@ -41,13 +41,15 @@ class Settings extends Component {
 
   render() {
     const { isOpen, settings } = this.props;
-    const {
-      isCustomCells,
-      isAutoUpdate,
-      updateInterval,
-      isFreezeFirstRow,
-      isFreezeFirstCol,
-    } = settings;
+    const { isCustomCells, isAutoUpdate, isFreezeFirstRow, isFreezeFirstCol } = settings;
+    const { updateInterval, rowHeight } = settings;
+    // prettier-ignore
+    const switches = [
+      { key: 'isCustomCells', label: 'Custom Cells', isChecked: isCustomCells },
+      { key: 'isFreezeFirstCol', label: 'Freeze First Column', isChecked: isFreezeFirstCol },
+      { key: 'isFreezeFirstRow', label: 'Freeze First Row', isChecked: isFreezeFirstRow },
+      { key: 'isAutoUpdate', label: 'Auto Update', isChecked: isAutoUpdate },
+    ];
     return (
       <div className={`Settings ${isOpen ? 'Settings--open' : ''}`}>
         <div className="Panel">
@@ -62,28 +64,9 @@ class Settings extends Component {
             </Column>
           </Row>
           <Divider />
-          {this.renderSwitch({
-            key: 'isCustomCells',
-            label: 'Custom Cells',
-            isChecked: isCustomCells,
-          })};
-          {this.renderSwitch({
-            key: 'isFreezeFirstRow',
-            label: 'Freeze First Row',
-            isChecked: isFreezeFirstRow,
-          })};
-          {this.renderSwitch({
-            key: 'isFreezeFirstCol',
-            label: 'Freeze First Column',
-            isChecked: isFreezeFirstCol,
-          })};
-          {this.renderSwitch({
-            key: 'isAutoUpdate',
-            label: 'Auto Update',
-            isChecked: isAutoUpdate,
-          })};
+          {switches.map(element => this.renderSwitch(element))}
           <FormGroup className="FormGroup">
-            <FormLabel>Update Interval (s)</FormLabel>
+            <FormLabel>Update Interval (s):</FormLabel>
             <Select
               value={updateInterval}
               onChange={event =>
@@ -98,6 +81,19 @@ class Settings extends Component {
               <MenuItem value={60000}>60</MenuItem>
             </Select>
           </FormGroup>
+          <FormGroup className="FormGroup">
+            <FormLabel>Display density:</FormLabel>
+            <Select
+              value={rowHeight}
+              onChange={event =>
+                this.handleUpdateSettings({ rowHeight: event.target.value })
+              }
+            >
+              <MenuItem value={40}>Tiny</MenuItem>
+              <MenuItem value={60}>Normal</MenuItem>
+              <MenuItem value={80}>Wide</MenuItem>
+            </Select>
+          </FormGroup>
         </div>
       </div>
     );
@@ -109,11 +105,12 @@ Settings.propTypes = {
   onClose: PropTypes.func.isRequired,
   onUpdateSettings: PropTypes.func.isRequired,
   settings: PropTypes.shape({
-    isCustomCells: PropTypes.bool,
     isAutoUpdate: PropTypes.bool,
-    updateInterval: PropTypes.number,
-    isFreezeFirstRow: PropTypes.bool,
+    isCustomCells: PropTypes.bool,
     isFreezeFirstCol: PropTypes.bool,
+    isFreezeFirstRow: PropTypes.bool,
+    rowHeight: PropTypes.number,
+    updateInterval: PropTypes.number,
   }).isRequired,
 };
 

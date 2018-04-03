@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 /* Material UI */
 import Button from 'material-ui/Button';
@@ -18,14 +18,14 @@ import DeleteForever from 'material-ui-icons/DeleteForever';
 import './EditPortfolio.css';
 
 class EditPortfolio extends Component {
-  state = { selected: null, filter: null };
+  state = { filter: null };
 
   handleDelete = name => this.props.onDelete(name);
-  handleSelect = () => this.props.onSelect(this.state.selected);
+  handleSelect = name => this.props.onSelect(name);
 
   handleClose = () => {
     this.props.onClose();
-    this.setState({ selected: null, filter: null }); // reset state
+    this.setState({ filter: null }); // reset state
   };
 
   handleSubmit = () => {
@@ -33,27 +33,56 @@ class EditPortfolio extends Component {
     this.handleClose();
   };
 
-  render() {
-    const { portfoliosList, isOpen } = this.props;
-    const { selected, filter } = this.state;
-    const list = filter
+  renderPortoliosList = () => {
+    const { selectedPortfolio, portfoliosList } = this.props;
+    const { filter } = this.state;
+    const filteredList = filter
       ? portfoliosList.filter(portfolio => portfolio.name.toLowerCase().includes(filter))
       : portfoliosList;
+    return filteredList.length ? (
+      <Fragment>
+        {filteredList.map(portfolio => (
+          <ListItem
+            button
+            key={portfolio.name}
+            onClick={() => this.handleSelect(portfolio.name)}
+            className={`ListItem ${
+              portfolio.name === selectedPortfolio ? 'ListItem--active' : ''
+            }`}
+          >
+            <ListItemText primary={portfolio.name} />
+            <ListItemSecondaryAction>
+              <IconButton
+                aria-label="Delete"
+                disabled={portfoliosList.length === 1}
+                onClick={() => this.handleDelete(portfolio.name)}
+              >
+                <DeleteForever />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </Fragment>
+    ) : (
+      <Typography>No entries found containing: {filter}</Typography>
+    );
+  };
 
+  render() {
+    const { isOpen } = this.props;
     return (
       <Dialog
         fullWidth
         className="EditPortfolio"
+        aria-labelledby="EditPortfolio"
         open={isOpen}
         onClose={this.handleClose}
-        aria-labelledby="EditPortfolioDialogTitle"
       >
-        <DialogTitle id="EditPortfolioDialogTitle">Portfolios</DialogTitle>
+        <DialogTitle id="EditPortfolio">Portfolios</DialogTitle>
         <DialogContent>
           <TextField
             required
             fullWidth
-            type="text"
             margin="dense"
             placeholder="Search portfolio"
             onChange={event =>
@@ -61,38 +90,11 @@ class EditPortfolio extends Component {
             }
           />
           <List className="List" subheader={<ListSubheader>Name</ListSubheader>}>
-            {!list.length ? (
-              <Typography>No entries found containing: {filter}</Typography>
-            ) : (
-              list.map(portfolio => (
-                <ListItem
-                  button
-                  className="ListItem"
-                  key={portfolio.name}
-                  onClick={() => this.setState({ selected: portfolio.name })}
-                >
-                  <ListItemText primary={portfolio.name} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="Delete"
-                      disabled={list.length === 1}
-                      onClick={() => this.handleDelete(portfolio.name)}
-                    >
-                      <DeleteForever />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))
-            )}
+            {this.renderPortoliosList()}
           </List>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Close
-          </Button>
-          <Button onClick={this.handleSubmit} color="primary" disabled={!selected}>
-            Open
-          </Button>
+          <Button onClick={this.handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
     );

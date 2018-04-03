@@ -20,7 +20,8 @@ export default function generateTradingData(symbols, tickers, histLenght = 60) {
       priceUsd: '0',
     };
     const ticker = tickers.find(entry => symbol === entry.symbol) || fallout;
-    const price = priceRange(parseFloat(ticker.priceUsd));
+    const value = parseFloat(ticker.priceUsd);
+    const price = priceRange(randBetween(value / 1.1, value * 1.1));
     let open = price.in;
     const entry = {
       id: ticker.id,

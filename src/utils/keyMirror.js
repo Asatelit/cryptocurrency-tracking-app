@@ -1,5 +1,5 @@
 /**
- * Creating an object with values equal to its keys
+ * Create an object with values equal to its key names.
  * @function keyMirror
  * @param {Object} obj
  * @returns {Object}

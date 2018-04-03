@@ -5,11 +5,10 @@ import ActionTypes from '../constants/ActionTypes';
  * @arg {Object[]} data
  */
 export function getTradingData(data) {
-  return dispatch =>
-    dispatch({
-      type: ActionTypes.RECEIVE_TRADING_DATA,
-      payload: data,
-    });
+  return {
+    type: ActionTypes.RECEIVE_TRADING_DATA,
+    payload: data,
+  };
 }
 
 /**
@@ -32,9 +31,8 @@ export function getTradingData(data) {
  * @arg {string} data.lastUpdated
  */
 export function getTickers(data) {
-  return dispatch =>
-    dispatch({
-      type: ActionTypes.RECEIVE_TICKERS_DATA,
-      payload: data,
-    });
+  return {
+    type: ActionTypes.RECEIVE_TICKERS_DATA,
+    payload: data,
+  };
 }

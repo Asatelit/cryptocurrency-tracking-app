@@ -10,7 +10,7 @@ import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
 import FilterList from 'material-ui-icons/FilterList';
 /* Utils */
 import Assets from '../../constants/AssetsTypes';
-import formatCell from '../../utils/formatCell';
+import { formatCell } from '../../utils/wjUtils';
 /* Custom Components */
 import DetailPanel from '../DetailPanel';
 /* CSS */
@@ -19,42 +19,55 @@ import './FlexGrid.css';
 
 class Grid extends Component {
   componentWillReceiveProps(nextProps) {
+    const grid = this.flexGrid.control;
     const { settings, itemsSource } = this.props;
-    const isUpdated = (a, b) => JSON.stringify(a) !== JSON.stringify(b);
-    const grid = window[Assets.WJ_GRID];
     const nextItemSource = nextProps.itemsSource;
+    const isUpdated = (a, b) => JSON.stringify(a) !== JSON.stringify(b);
 
-    // Prevent rerender of the Wijmo FlexGrid
-    if (isUpdated(nextItemSource, itemsSource)) {
-      if (itemsSource.length !== nextItemSource.length) {
-        grid.itemsSource = nextProps.itemsSource;
-      } else {
-        nextItemSource.forEach(entry => {
-          const element = this.cellElements[entry.symbol];
-          if (element) {
-            grid.columns.forEach(col => {
-              const cell = element[col.binding];
-              if (cell) {
-                cell.innerHTML = settings.isCustomCells
-                  ? `<div>${formatCell(cell, entry, col, true)}</div>`
-                  : `<div>${cell.innerHTML}</div>`;
-              }
-            });
-          }
-        });
-      }
+    // return if there are not any updates available
+    if (!isUpdated(nextItemSource, itemsSource)) return;
+
+    if (itemsSource.length === nextItemSource.length) {
+      // select the modified rows only
+      const modified = nextItemSource.filter((entry, index) =>
+        isUpdated(entry, itemsSource[index]),
+      );
+
+      modified.forEach(item => {
+        const storedRow = this.cellElements[item.symbol]; // get stored row
+        if (storedRow) {
+          grid.columns.forEach(col => {
+            const storedCell = storedRow[col.binding]; // get stored cell
+            if (storedCell) {
+              storedCell.innerHTML = settings.isCustomCells
+                ? `<div>${formatCell(storedCell, item, col, true)}</div>`
+                : `<div>${storedCell.innerHTML}</div>`;
+            }
+          });
+        }
+      });
+    } else {
+      // update itemsSource
+      grid.itemsSource = nextProps.itemsSource;
     }
   }
 
+  setFlexGridRef = ref => {
+    this.flexGrid = ref;
+    this.props.onUpdateReference(ref);
+  };
+
   cellElements = {}; // stored cell elements
-  clearCells = false;
+  flexGrid = null; // wjFlexGrid reference
+  requestClearCells = false;
 
   /**
    * Occurs after the grid has updated its internal layout
    * @arg {Object] [event] - Event data.
    */
   handleUpdatingView = () => {
-    this.clearCells = true; // clear cell elements on next formatItem
+    // clear cell elements on next formatItem
+    this.requestClearCells = true;
   };
 
   /**
@@ -63,31 +76,34 @@ class Grid extends Component {
    * @arg {Object] cellRange - Range of cells affected by the event.
    */
   handleFormatItem = (gridPanel, cellRange) => {
-    const { cell, col, row } = cellRange;
+    const { cell, col, row, panel } = cellRange;
     const { rows, columns, cells } = gridPanel;
     const { settings } = this.props;
 
-    if (cellRange.panel !== cells) {
-      cell.innerHTML = `<div>${cell.innerHTML}</div>`;
-    } else {
+    if (cells === panel) {
       const column = columns[col];
       const item = rows[row].dataItem;
 
       // clear cell elements
-      if (this.clearCells) {
-        this.clearCells = false;
+      if (this.requestClearCells) {
+        this.requestClearCells = false;
         this.cellElements = {};
       }
 
       if (item) {
+        // create stored cell element (if it is needed)
+        if (!this.cellElements[item.symbol]) {
+          this.cellElements[item.symbol] = { item };
+        }
         // store cell element
-        if (!this.cellElements[item.symbol]) this.cellElements[item.symbol] = { item };
         this.cellElements[item.symbol][column.binding] = cell;
         // custom painting
         cell.innerHTML = settings.isCustomCells
           ? `<div>${formatCell(cell, item, column, false)}</div>`
           : `<div>${cell.innerHTML}</div>`;
       }
+    } else {
+      cell.innerHTML = `<div>${cell.innerHTML}</div>`;
     }
   };
 
@@ -96,17 +112,8 @@ class Grid extends Component {
    * @arg {Object] gridPanel - GridPanel that contains the range.
    */
   handleInitialized = gridPanel => {
-    const grid = gridPanel;
-    const { itemsSource } = this.props;
-
-    // Sets the array that contains items shown on the grid.
-    grid.itemsSource = itemsSource;
-
-    // TODO: get rid of using the global scope
-    window[Assets.WJ_GRID] = grid;
-
     // Create detail provider
-    const detailProvider = new wjGridDetail.FlexGridDetailProvider(grid, {});
+    const detailProvider = new wjGridDetail.FlexGridDetailProvider(gridPanel, {});
     detailProvider.createDetailCell = row => {
       const detailCell = document.createElement('div');
       // Attach detail panel
@@ -140,9 +147,10 @@ class Grid extends Component {
         <FlexGrid
           isReadOnly
           className="FlexGrid"
+          ref={this.setFlexGridRef}
           selectionMode={wjGrid.SelectionMode.Row}
           autoGenerateColumns={false}
-          rows={{ defaultSize: 60 }}
+          rows={{ defaultSize: settings.rowHeight }}
           columnHeaders={{ rows: { defaultSize: 78 } }}
           frozenRows={settings.isFreezeFirstRow ? 1 : 0}
           frozenColumns={settings.isFreezeFirstCol ? 1 : 0}
@@ -176,12 +184,14 @@ Grid.propTypes = {
     PropTypes.shape
   ).isRequired,
   settings: PropTypes.shape({
-    isCustomCells: PropTypes.bool,
     isAutoUpdate: PropTypes.bool,
-    updateInterval: PropTypes.number,
-    isFreezeFirstRow: PropTypes.bool,
+    isCustomCells: PropTypes.bool,
     isFreezeFirstCol: PropTypes.bool,
+    isFreezeFirstRow: PropTypes.bool,
+    rowHeight: PropTypes.number,
+    updateInterval: PropTypes.number,
   }).isRequired,
+  onUpdateReference: PropTypes.func.isRequired,
 };
 
 Grid.defaultProps = {

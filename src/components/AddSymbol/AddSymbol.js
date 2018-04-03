@@ -14,13 +14,8 @@ import './AddSymbol.css';
 class AddSymbol extends Component {
   state = { symbols: this.props.portfolio.symbols };
 
-  handleChange = event => {
-    this.setState({ symbols: event.target.value });
-  };
-
-  handleClose = () => {
-    this.props.onClose();
-  };
+  handleClose = () => this.props.onClose();
+  handleChange = event => this.setState({ symbols: event.target.value });
 
   handleSubmit = () => {
     const { portfolio } = this.props;
@@ -34,62 +29,64 @@ class AddSymbol extends Component {
     });
   };
 
-  render() {
-    const { symbols } = this.props;
+  renderSymbolsSelector = () => {
+    const { symbols } = this.state;
+    const dict = this.props.symbols;
+    return (
+      <Select
+        multiple
+        value={this.state.symbols}
+        classes={{ selectMenu: 'SelectMenu' }}
+        input={<Input id="select-multiple-chip" />}
+        onChange={this.handleChange}
+        renderValue={selected => (
+          <div className="Chips">
+            {selected.map(value => (
+              <Chip
+                className="Chip"
+                key={value}
+                label={value}
+                onDelete={() =>
+                  this.setState({
+                    symbols: symbols.filter(symbol => symbol !== value),
+                  })
+                }
+              />
+            ))}
+          </div>
+        )}
+      >
+        {dict.map(element => (
+          <MenuItem
+            key={element.symbol}
+            value={element.symbol}
+            className={symbols.indexOf(element) === -1 ? 'MenuItem--selected' : ''}
+          >
+            {element.symbol}
+          </MenuItem>
+        ))}
+      </Select>
+    );
+  };
 
+  render() {
     return (
       <Dialog
         open
         fullWidth
+        aria-labelledby="AddPortfolio"
         className="AddSymbol"
         onClose={this.handleClose}
-        aria-labelledby="AddPortfolioDialogTitle"
       >
-        <DialogTitle id="AddPortfolioDialogTitle">Add Symbol</DialogTitle>
+        <DialogTitle id="AddPortfolio">Add Symbol</DialogTitle>
         <DialogContent>
           <FormControl className="FormControl">
             <InputLabel htmlFor="select-multiple-chip">Find a Quote</InputLabel>
-            <Select
-              multiple
-              value={this.state.symbols}
-              onChange={this.handleChange}
-              input={<Input id="select-multiple-chip" />}
-              classes={{ selectMenu: 'SelectMenu' }}
-              renderValue={selected => (
-                <div className="Chips">
-                  {selected.map(value => (
-                    <Chip
-                      className="Chip"
-                      key={value}
-                      label={value}
-                      onDelete={() =>
-                        this.setState({
-                          symbols: this.state.symbols.filter(symbol => symbol !== value),
-                        })
-                      }
-                    />
-                  ))}
-                </div>
-              )}
-            >
-              {symbols.map(element => (
-                <MenuItem
-                  key={element.symbol}
-                  value={element.symbol}
-                  className={
-                    this.state.symbols.indexOf(element) === -1 ? 'MenuItem--selected' : ''
-                  }
-                >
-                  {element.symbol}
-                </MenuItem>
-              ))}
-            </Select>
+            {this.renderSymbolsSelector()}
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Cancel
-          </Button>
+          <Button onClick={this.handleClose}>Cancel</Button>
           <Button onClick={this.handleSubmit} color="primary">
             Update
           </Button>

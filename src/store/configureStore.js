@@ -8,9 +8,31 @@ import reducer from '../reducers/index';
  * @return {object} store - The created store
  */
 export default function configureStore(initialState) {
-  // Redux DevTools
-  // https://github.com/gaearon/redux-devtools
-  // eslint-disable-next-line no-underscore-dangle
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  return createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+  // Redux DevTools Extension. Hot Reloading with Time Travel helps to boost
+  // the developer’s productivity significantly and makes the development fun.
+  // https://github.com/zalmoxisus/redux-devtools-extension
+  /* eslint-disable no-underscore-dangle */
+  const composeEnhancers =
+    process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+      : compose;
+  /* eslint-enable */
+
+  const enhancer = composeEnhancers(
+    // Middleware is the suggested way to extend Redux with custom functionality.
+    // Middleware lets you wrap the store's dispatch method for fun and profit.
+    // https://redux.js.org/api-reference/applymiddleware
+    applyMiddleware(
+      // Redux Thunk middleware allows you to write action creators that return a function instead of an action.
+      // The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met.
+      // The inner function receives the store methods dispatch and getState as parameters.
+      // https://github.com/gaearon/redux-thunk
+      thunk,
+      // other middleware if any
+    ),
+
+    // other store enhancers if any
+  );
+
+  return createStore(reducer, initialState, enhancer);
 }

@@ -162,7 +162,7 @@ export function toggleSettingsPanel() {
 }
 
 /**
- *
+ * Change section
  */
 export function changeGridSection(id) {
   return {

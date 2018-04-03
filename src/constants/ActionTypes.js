@@ -23,12 +23,6 @@ const ActionTypes = keyMirror({
   CLOSE_SYMBOLS_DIALOG: null,
   TOGGLE_SETTINGS_PANEL: null,
 
-  // GRID
-  GRID_EXPORT: null,
-  GRID_PRINT: null,
-  GRID_FREEZE_FIRST_CELL: null,
-  GRID_FREEZE_FIRST_COLUMN: null,
-
   // APP
   CHANGE_FILTER_TEXT: null,
   CHANGE_GRID_SECTION: null,

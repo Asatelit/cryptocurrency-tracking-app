@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 /* Action Creators */
 import * as appActionCreators from '../../actions/appActions';
-import * as gridActionCreators from '../../actions/gridActions';
 import * as portfoliosActionCreators from '../../actions/portfoliosActions';
 /* Components */
 import AddPortfolio from '../../components/AddPortfolio';
 import AddSymbol from '../../components/AddSymbol';
 import AppBar from '../../components/AppBar';
 import EditPortfolio from '../../components/EditPortfolio';
-import Grid from '../../components/Grid';
 import Settings from '../../components/Settings';
+import Grid from '../../components/Grid';
 import ToolBar from '../../components/ToolBar';
 import TopBar from '../../components/TopBar';
+/* Utils */
+import * as wjUtils from '../../utils/wjUtils';
 /* CSS */
 import './App.css';
 import './Wijmo.css';
@@ -57,6 +58,7 @@ class App extends Component {
   }
 
   autoUpdateInterval = null;
+  wjFlexGrid = null;
 
   autoUpdate = interval => {
     this.autoUpdateInterval = setInterval(() => {
@@ -71,7 +73,7 @@ class App extends Component {
     const { app, data, portfolios } = this.props; // reducers
     const { appActions } = this.props; // action creators
     return (
-      <React.Fragment>
+      <Fragment>
         <AppBar
           portfoliosList={portfolios.list}
           selectedPortfolio={portfolios.selected}
@@ -94,7 +96,7 @@ class App extends Component {
           onUpdateSettings={appActions.updateSettings}
           onClose={appActions.toggleSettingsPanel}
         />
-      </React.Fragment>
+      </Fragment>
     );
   };
 
@@ -103,7 +105,7 @@ class App extends Component {
     const { app, data, portfolios } = this.props; // reducers
     const { appActions, portfoliosActions } = this.props; // action creators
     return (
-      <React.Fragment>
+      <Fragment>
         {app.isSymbolsDialogOpen && (
           <AddSymbol
             symbols={data.tickers}
@@ -128,27 +130,28 @@ class App extends Component {
           onSelect={appActions.changeCurrentPortfolio}
           onDelete={portfoliosActions.deletePortfolio}
         />
-      </React.Fragment>
+      </Fragment>
     );
   };
 
   // Render FlexGrid
   renderGrid = () => {
-    const { app, data, appActions, gridActions } = this.props;
+    const { app, data, appActions } = this.props;
     const filteredItemSource = data.filter
       ? data.trading.filter(entry =>
           `${entry.name} ${entry.symbol}`.toLowerCase().includes(data.filter),
         )
       : data.trading;
     return (
-      <React.Fragment>
+      <Fragment>
         <ToolBar
           columns={data.columns}
           section={app.gridSection}
           onAddSymbols={appActions.openSymbolsDialog}
-          onDownload={gridActions.download}
+          onDownload={() => wjUtils.pdf(this.wjFlexGrid.control)}
           onHideField={appActions.changeColumnsVisibility}
-          onPrint={gridActions.print}
+          onPrint={() => wjUtils.print(this.wjFlexGrid.control)}
+          onRefresh={appActions.requestTradingData}
         />
         <Grid
           filter={data.filter}
@@ -156,8 +159,11 @@ class App extends Component {
           section={app.gridSection}
           settings={app.settings}
           itemsSource={filteredItemSource}
+          onUpdateReference={ref => {
+            this.wjFlexGrid = ref;
+          }}
         />
-      </React.Fragment>
+      </Fragment>
     );
   };
 
@@ -182,20 +188,20 @@ App.propTypes = {
     isSettingsPanelOpen: PropTypes.bool,
     isSymbolsDialogOpen: PropTypes.bool,
     settings: PropTypes.shape({
-      isCustomCells: PropTypes.bool,
       isAutoUpdate: PropTypes.bool,
-      updateInterval: PropTypes.number,
-      isFreezeFirstRow: PropTypes.bool,
+      isCustomCells: PropTypes.bool,
       isFreezeFirstCol: PropTypes.bool,
+      isFreezeFirstRow: PropTypes.bool,
+      updateInterval: PropTypes.number,
     }).isRequired,
   }).isRequired,
 
   // Data Reducer
   data: PropTypes.shape({
+    columns: PropTypes.shape(),
     filter: PropTypes.string,
     tickers: PropTypes.array,
     trading: PropTypes.array,
-    columns: PropTypes.shape(),
   }).isRequired,
 
   // Portfolios Reducer
@@ -206,48 +212,46 @@ App.propTypes = {
 
   // Portfolios Actions
   portfoliosActions: PropTypes.shape({
-    getPortfoliosList: PropTypes.func,
     addPortfolio: PropTypes.func,
-    getPortfolio: PropTypes.func,
-    editPortfolio: PropTypes.func,
     deletePortfolio: PropTypes.func,
-  }).isRequired,
-
-  // Grid Actions
-  gridActions: PropTypes.shape({
-    download: PropTypes.func,
-    print: PropTypes.func,
+    editPortfolio: PropTypes.func,
+    getPortfolio: PropTypes.func,
+    getPortfoliosList: PropTypes.func,
   }).isRequired,
 
   // App Actions
   appActions: PropTypes.shape({
-    updateTradingData: PropTypes.func,
-    updateSettings: PropTypes.func,
-    toggleSettingsPanel: PropTypes.func,
-    openSymbolsDialog: PropTypes.func,
-    openEditDialog: PropTypes.func,
-    openAddDialog: PropTypes.func,
-    requestTradingData: PropTypes.func,
-    closeSymbolsDialog: PropTypes.func,
-    closeEditDialog: PropTypes.func,
-    closeAddDialog: PropTypes.func,
-    changeGridSection: PropTypes.func,
-    changeFilterText: PropTypes.func,
-    changeCurrentPortfolio: PropTypes.func,
     changeColumnsVisibility: PropTypes.func,
+    changeCurrentPortfolio: PropTypes.func,
+    changeFilterText: PropTypes.func,
+    changeGridSection: PropTypes.func,
+    closeAddDialog: PropTypes.func,
+    closeEditDialog: PropTypes.func,
+    closeSymbolsDialog: PropTypes.func,
+    openAddDialog: PropTypes.func,
+    openEditDialog: PropTypes.func,
+    openSymbolsDialog: PropTypes.func,
+    requestTradingData: PropTypes.func,
+    toggleSettingsPanel: PropTypes.func,
+    updateSettings: PropTypes.func,
+    updateTradingData: PropTypes.func,
   }).isRequired,
 };
 
+// Subscribe to Redux store updates.
+// This means that any time the store is updated, mapStateToProps will be called
 const mapStateToProps = state => ({
+  app: state.app,
   data: state.data,
   portfolios: state.portfolios,
-  app: state.app,
 });
 
+// Merge actions creators into the component’s props.
 const mapDispatchToProps = dispatch => ({
-  portfoliosActions: bindActionCreators(portfoliosActionCreators, dispatch),
   appActions: bindActionCreators(appActionCreators, dispatch),
-  gridActions: bindActionCreators(gridActionCreators, dispatch),
+  portfoliosActions: bindActionCreators(portfoliosActionCreators, dispatch),
 });
 
+// Connects the component to a Redux store.
+// https://github.com/reactjs/react-redux/blob/master/docs/api.md
 export default connect(mapStateToProps, mapDispatchToProps)(App);

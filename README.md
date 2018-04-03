@@ -77,5 +77,7 @@ Your app is ready to be deployed.
 
 ### References
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-If you need additional documentation, see the [User Guide Document](./doc/README.md).
+This project was bootstrapped with:
+* [Create React App](./doc/README.md).
+* [Wijmo FlexGrid](https://www.grapecity.com/en/wijmo-flexgrid) - Fast, high-performance grid.
+* [Wijmo FlexChart](https://www.grapecity.com/en/wijmo-flexchart) - A Flexible JavaScript Chart Control.

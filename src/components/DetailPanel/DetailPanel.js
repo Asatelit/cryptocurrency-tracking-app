@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 /* Material UI */
 import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table';
@@ -30,14 +30,14 @@ class DetailPanel extends Component {
       { name: 'Range', value: `${rangeMin} - ${rangeMax}` },
     ];
     return (
-      <React.Fragment>
+      <Fragment>
         {summary.map(entry => (
           <TableRow key={entry.name}>
             <TableCell>{entry.name}</TableCell>
             <TableCell numeric>{entry.value}</TableCell>
           </TableRow>
         ))}
-      </React.Fragment>
+      </Fragment>
     );
   };
 
