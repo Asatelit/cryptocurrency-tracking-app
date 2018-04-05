@@ -11,13 +11,13 @@ const Column = props => {
     verticalAlignment,
     flexDirection,
   } = props;
-  const cn = 'Column';
+  const cn = 'column';
   const classes = cx(cn, {
     [className]: Boolean(className),
-    [`${cn}--shrink`]: shrink,
-    [`${cn}--${horizontalAlignment}`]: horizontalAlignment,
-    [`${cn}--${verticalAlignment}`]: verticalAlignment,
-    [`${cn}--dir-${flexDirection}`]: flexDirection,
+    [`${cn}_shrink`]: shrink,
+    [`${cn}_${horizontalAlignment}`]: horizontalAlignment,
+    [`${cn}_${verticalAlignment}`]: verticalAlignment,
+    [`${cn}_dir_${flexDirection}`]: flexDirection,
   });
 
   return <div className={classes}>{props.children}</div>;

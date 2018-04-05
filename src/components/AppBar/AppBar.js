@@ -25,7 +25,7 @@ class AppBar extends Component {
     <Fragment>
       {actions.map(action => (
         <IconButton
-          className="IconButton"
+          className="icon-button"
           color="inherit"
           key={action.key}
           aria-label={action.label}
@@ -49,10 +49,10 @@ class AppBar extends Component {
       { key: 'settings', label: 'Settings', handler: this.handleOpenSettings, icon: <SettingsIcon /> },
     ];
     return (
-      <div className={`AppBar ${isCollapsed ? 'AppBar--collapsed' : ''}`}>
+      <div className={`app-bar ${isCollapsed ? 'app-bar_collapsed' : ''}`}>
         <Row>
           <Column shrink>
-            <Typography className="Title" variant="title" color="inherit">
+            <Typography className="title" variant="title" color="inherit">
               Portfolio & Watchlist
             </Typography>
             {this.renderButton(mainActions)}
@@ -60,17 +60,17 @@ class AppBar extends Component {
           <Column>
             <Tabs
               scrollable
-              className="Tabs"
+              className="tabs"
               scrollButtons="auto"
               indicatorColor="primary"
               textColor="inherit"
-              classes={{ indicator: 'TabsIndicator' }}
+              classes={{ indicator: 'tabs-indicator' }}
               onChange={this.handleChangeTab}
               value={selectedPortfolio}
             >
               {portfoliosList.map(portfolio => (
                 <Tab
-                  classes={{ root: 'Tab', label: 'Tab-label' }}
+                  classes={{ root: 'tab', label: 'tab-label' }}
                   key={portfolio.name}
                   label={portfolio.name}
                   value={portfolio.name}

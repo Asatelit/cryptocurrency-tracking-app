@@ -1,22 +1,20 @@
-.DetailPanel {
+.detail-panel {
   padding: .5rem 0;
   background: #FBFBFB;
 }
 
-.DetailPanel-col {
+.detail-panel .column {
   box-sizing: padding-box;
   padding: 1rem 3rem;
 }
 
-.DetailPanel .Headline {
+.detail-panel .headline {
   display: flex;
   align-items: center;
   color: #CB2C77;
   margin-left: -1rem;
 }
 
-.DetailPanel .Headline--isRising {
+.detail-panel .headline_increased {
   color: #73CA21;
 }
-
-

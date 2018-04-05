@@ -1,4 +1,4 @@
-.AppBar {
+.app-bar {
   display: flex;
   width: 100%;
   color: #FFF;
@@ -9,39 +9,39 @@
   box-sizing: border-box;
 }
 
-.AppBar--collapsed {
+.app-bar_collapsed {
   width: calc(100% - 400px);
 }
 
-.AppBar .Tabs {
+.app-bar .tabs {
   width: 100%;
 }
 
-.AppBar .TabsIndicator {
+.app-bar .tabs-indicator {
   background: #3B78E7;
   height: 100%;
 }
 
-.AppBar .Tab {
+.app-bar .tab {
   text-transform: none;
   z-index: 1;
 }
 
-@media (min-width: 960px) {
-  .AppBar .Tab-label {
-    font-size: 1rem;
-  }
-}
-
-.AppBar .Title {
+.app-bar .title {
   margin-right: 1em;
 }
 
-.AppBar .IconButton {
+.app-bar .icon-button {
   opacity: .85;
   transition: opacity .15s;
 }
 
-.AppBar .IconButton:hover {
+.app-bar .icon-button:hover {
   opacity: 1;
+}
+
+@media (min-width: 960px) {
+  .app-bar .tab-label {
+    font-size: 1rem;
+  }
 }

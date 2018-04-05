@@ -36,14 +36,14 @@ class AddSymbol extends Component {
       <Select
         multiple
         value={this.state.symbols}
-        classes={{ selectMenu: 'SelectMenu' }}
+        classes={{ selectMenu: 'select-menu' }}
         input={<Input id="select-multiple-chip" />}
         onChange={this.handleChange}
         renderValue={selected => (
-          <div className="Chips">
+          <div>
             {selected.map(value => (
               <Chip
-                className="Chip"
+                className="chip"
                 key={value}
                 label={value}
                 onDelete={() =>
@@ -57,11 +57,7 @@ class AddSymbol extends Component {
         )}
       >
         {dict.map(element => (
-          <MenuItem
-            key={element.symbol}
-            value={element.symbol}
-            className={symbols.indexOf(element) === -1 ? 'MenuItem--selected' : ''}
-          >
+          <MenuItem key={element.symbol} value={element.symbol}>
             {element.symbol}
           </MenuItem>
         ))}
@@ -75,12 +71,12 @@ class AddSymbol extends Component {
         open
         fullWidth
         aria-labelledby="AddPortfolio"
-        className="AddSymbol"
+        className="add-symbol"
         onClose={this.handleClose}
       >
         <DialogTitle id="AddPortfolio">Add Symbol</DialogTitle>
         <DialogContent>
-          <FormControl className="FormControl">
+          <FormControl className="form-control">
             <InputLabel htmlFor="select-multiple-chip">Find a Quote</InputLabel>
             {this.renderSymbolsSelector()}
           </FormControl>

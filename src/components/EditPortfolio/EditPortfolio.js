@@ -46,8 +46,8 @@ class EditPortfolio extends Component {
             button
             key={portfolio.name}
             onClick={() => this.handleSelect(portfolio.name)}
-            className={`ListItem ${
-              portfolio.name === selectedPortfolio ? 'ListItem--active' : ''
+            className={`list-item ${
+              portfolio.name === selectedPortfolio ? 'list-item--active' : ''
             }`}
           >
             <ListItemText primary={portfolio.name} />
@@ -73,7 +73,7 @@ class EditPortfolio extends Component {
     return (
       <Dialog
         fullWidth
-        className="EditPortfolio"
+        className="edit-portfolio"
         aria-labelledby="EditPortfolio"
         open={isOpen}
         onClose={this.handleClose}
@@ -89,7 +89,7 @@ class EditPortfolio extends Component {
               this.setState({ filter: event.target.value.toLowerCase() })
             }
           />
-          <List className="List" subheader={<ListSubheader>Name</ListSubheader>}>
+          <List className="list" subheader={<ListSubheader>Name</ListSubheader>}>
             {this.renderPortoliosList()}
           </List>
         </DialogContent>

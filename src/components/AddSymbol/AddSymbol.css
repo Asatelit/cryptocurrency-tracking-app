@@ -1,14 +1,12 @@
-.AddSymbol {}
-
-.AddSymbol .FormControl {
+.add-symbol .form-control {
   max-width: 100%;
   width: 100%;
 }
 
-.AddSymbol .Chip {
+.add-symbol .chip {
   margin: 0 .5em .5em 0;
 }
 
-.AddSymbol .SelectMenu {
+.add-symbol .select-menu {
   white-space: normal;
 }

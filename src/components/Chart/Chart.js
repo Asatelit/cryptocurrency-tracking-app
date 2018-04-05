@@ -61,9 +61,9 @@ class Chart extends Component {
     const { dataItem } = this.props;
     const { axisMin, axisMax } = this.state;
     return (
-      <div className="Chart">
+      <div className="chart">
         <FlexChart
-          className="FlexChart"
+          className="flex-chart"
           chartType={ChartType.Candlestick}
           selectionMode={SelectionMode.Point}
           itemsSource={dataItem.history}
@@ -73,7 +73,7 @@ class Chart extends Component {
           itemFormatter={this.handleItemFormatter}
         />
         <FlexChart
-          className="DataRange"
+          className="data-range"
           plotMargin="6 0 6 80"
           itemsSource={dataItem.history}
           series={[{ binding: 'volume' }]}

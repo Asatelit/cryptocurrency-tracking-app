@@ -46,11 +46,11 @@ class DetailPanel extends Component {
     const isRising = dataItem.close > dataItem.open;
     const difference = (dataItem.close - dataItem.open).toFixed(2);
     return (
-      <div className="DetailPanel">
+      <div className="detail-panel">
         <Row>
-          <Column className="DetailPanel-col" flexDirection="column" shrink>
+          <Column className="column" flexDirection="column" shrink>
             <Typography
-              className={`Headline ${isRising ? 'Headline--isRising' : ''}`}
+              className={`headline ${isRising ? 'headline_increased' : ''}`}
               variant="headline"
             >
               {isRising ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
@@ -61,11 +61,11 @@ class DetailPanel extends Component {
               {difference}
             </Typography>
           </Column>
-          <Column className="DetailPanel-col">
+          <Column className="column">
             <Chart dataItem={dataItem} />
           </Column>
-          <Column className="DetailPanel-col" shrink>
-            <Table className="Table">
+          <Column className="column" shrink>
+            <Table>
               <TableBody>{this.renderSummaryRows(dataItem)}</TableBody>
             </Table>
           </Column>

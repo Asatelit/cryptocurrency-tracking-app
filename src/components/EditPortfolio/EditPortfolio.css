@@ -1,7 +1,7 @@
-.EditPortfolio .List {
+.edit-portfolio .list {
   margin-top: 1rem;
 }
 
-.EditPortfolio .ListItem--active {
+.edit-portfolio .list-item--active {
   background-color: rgba(0,0,0,.05);
 }
