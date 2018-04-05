@@ -169,11 +169,15 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
         {this.renderNavigation()}
-        <div className="App-content">
-          <div className="App-grid">{this.renderGrid()}</div>
+        <div className="app__content">
+          <div className="app__grid">
+            {/* Render FlexGrid */}
+            {this.renderGrid()}
+          </div>
         </div>
+        {/* Render Modal Dialogs */}
         {this.renderDialogs()}
       </div>
     );

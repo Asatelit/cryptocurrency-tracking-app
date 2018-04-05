@@ -29,20 +29,28 @@ class ToolBar extends Component {
   handleChangeColumn = (event, binding) =>
     this.props.onHideField(binding, event.target.checked);
 
+  renderCheckbox = option => (
+    <Checkbox
+      checked={option.visible}
+      value={option.binding}
+      onChange={event => this.handleChangeColumn(event, option.binding)}
+    />
+  );
+
   render() {
     const { columnsVisibilityMenu } = this.state;
     const { columns, section } = this.props;
     const column = columns[section];
     return (
-      <div className="ToolBar">
+      <div className="toolbar">
         <Row>
           <Column>
-            <Typography className="Caption" variant="caption">
+            <Typography className="caption" variant="caption">
               Symbols
             </Typography>
             <Button color="inherit" onClick={this.handleAddSymbol}>
               <PlayListIcon />
-              <span className="Button-label">Symbols</span>
+              <span className="button-label">Symbols</span>
             </Button>
             <div>
               <Button
@@ -52,48 +60,41 @@ class ToolBar extends Component {
                 }
               >
                 <HideIcon />
-                <span className="Button-label">Columns</span>
+                <span className="button-label">Columns</span>
               </Button>
               <Menu
                 anchorEl={columnsVisibilityMenu}
                 open={Boolean(columnsVisibilityMenu)}
                 onClose={() => this.setState({ columnsVisibilityMenu: null })}
               >
-                <FormGroup className="ColumnsMenuForm">
+                <div className="g_menu-inner">
                   {column.map(
                     option =>
                       Boolean(option.binding) && (
-                        <FormControlLabel
-                          key={option.binding}
-                          control={
-                            <Checkbox
-                              checked={option.visible}
-                              value={option.binding}
-                              onChange={event =>
-                                this.handleChangeColumn(event, option.binding)
-                              }
-                            />
-                          }
-                          label={option.header}
-                        />
+                        <FormGroup key={option.binding}>
+                          <FormControlLabel
+                            label={option.header}
+                            control={this.renderCheckbox(option)}
+                          />
+                        </FormGroup>
                       ),
                   )}
-                </FormGroup>
+                </div>
               </Menu>
             </div>
           </Column>
           <Column shrink horizontalAlignment="right">
             <Button color="inherit" onClick={this.handleRefresh}>
               <RefreshIcon />
-              <span className="Button-label">Refresh</span>
+              <span className="button-label">Refresh</span>
             </Button>
             <Button color="inherit" onClick={this.handlePrint}>
               <PrintIcon />
-              <span className="Button-label">Print</span>
+              <span className="button-label">Print</span>
             </Button>
             <Button color="inherit" onClick={this.handleDownload}>
               <DownloadIcon />
-              <span className="Button-label">Download</span>
+              <span className="button-label">Download</span>
             </Button>
           </Column>
         </Row>

@@ -1,4 +1,4 @@
-.Settings {
+.settings {
   right: -410px;
   display: block;
   position: fixed;
@@ -9,7 +9,7 @@
   transition: all 200ms ease-in-out;
 }
 
-.Settings .Panel {
+.settings .panel {
   box-sizing: border-box;
   box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
   border-left: 1px solid rgba(222, 227, 231, 0.56);
@@ -20,28 +20,28 @@
   width: 100%;
 }
 
-.Settings .Panel-head {
+.settings .panel-head {
   padding: .5rem 1rem;
   box-sizing: border-box;
 }
 
-.Settings .Panel-body {
+.settings .panel-body {
   overflow: auto;
   flex: 1;
   padding: 1rem;
 }
 
-.Settings--open {
+.settings_open {
   right: 0;
 }
 
 @media (max-width: 740px) {
-  .Settings {
+  .settings {
     width: 100%;
     right: -105%;
   }
 }
 
-.Settings .FormGroup {
+.settings .form-group {
   margin: .5rem 1rem;
 }

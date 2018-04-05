@@ -5,18 +5,18 @@ import './Row.css';
 
 const Row = props => {
   const { className, horizontalAlignment, verticalAlignment } = props;
-  const cn = 'Row';
+  const cn = 'row';
   const classes = cx(cn, {
     [className]: Boolean(className),
-    [`${cn}--left`]: horizontalAlignment === 'left',
-    [`${cn}--right`]: horizontalAlignment === 'right',
-    [`${cn}--center`]: horizontalAlignment === 'center',
-    [`${cn}--justify`]: horizontalAlignment === 'justify',
-    [`${cn}--spaced`]: horizontalAlignment === 'spaced',
-    [`${cn}--top`]: verticalAlignment === 'top',
-    [`${cn}--middle`]: verticalAlignment === 'middle',
-    [`${cn}--bottom`]: verticalAlignment === 'bottom',
-    [`${cn}--stretch`]: verticalAlignment === 'stretch',
+    [`${cn}_left`]: horizontalAlignment === 'left',
+    [`${cn}_right`]: horizontalAlignment === 'right',
+    [`${cn}_center`]: horizontalAlignment === 'center',
+    [`${cn}_justify`]: horizontalAlignment === 'justify',
+    [`${cn}_spaced`]: horizontalAlignment === 'spaced',
+    [`${cn}_top`]: verticalAlignment === 'top',
+    [`${cn}_middle`]: verticalAlignment === 'middle',
+    [`${cn}_bottom`]: verticalAlignment === 'bottom',
+    [`${cn}_stretch`]: verticalAlignment === 'stretch',
   });
 
   return (

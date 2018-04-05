@@ -1,4 +1,4 @@
-.App {
+.app {
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -9,30 +9,30 @@
   overflow-x: auto;
 }
 
-.App *::-webkit-scrollbar-track {
+.app *::-webkit-scrollbar-track {
   background-color: transparent;
   position: absolute;
 }
 
-.App *::-webkit-scrollbar {
+.app *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
   background-color: transparent;
 }
 
-.App *::-webkit-scrollbar-thumb {
+.app *::-webkit-scrollbar-thumb {
   background-color: #CCC;
   border: 2px solid transparent;
 }
 
-.App-content {
+.app__content {
   background: #FAFAFA;
   display: flex;
   flex: 1;
   padding: 24px;
 }
 
-.App-grid {
+.app__grid {
   width: 100%;
   display: flex;
   flex: 1 1 auto;

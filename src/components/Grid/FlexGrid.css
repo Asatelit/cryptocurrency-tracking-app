@@ -1,4 +1,4 @@
-.FlexGrid.wj-flexgrid {
+.flex-grid.wj-flexgrid {
   border-radius: 0;
   height: 100%;
   width: 100%;
@@ -8,37 +8,37 @@
   overflow: auto;
 }
 
-.FlexGrid .ticker div {
+.flex-grid .ticker div {
   display: inline-block;
 }
 
-.FlexGrid .ticker .chg {
+.flex-grid .ticker .chg {
   text-align: center;
   width: 4em;
 }
 
-.FlexGrid .ticker .glyph {
+.flex-grid .ticker .glyph {
   font-size: 120%;
   text-align: center;
   width: 1em;
 }
 
-.FlexGrid .ticker .spark {
+.flex-grid .ticker .spark {
   margin-left: 1rem;
   width: 4em;
   height: 1em;
   opacity: .65;
 }
 
-.FlexGrid .ticker.chg-up {
+.flex-grid .ticker.chg-up {
   color: green;
 }
 
-.FlexGrid .ticker.chg-down {
+.flex-grid .ticker.chg-down {
   color: red;
 }
 
-.FlexGrid .ticker .spark svg {
+.flex-grid .ticker .spark svg {
   width: 100%;
   height: 100%;
   stroke: currentColor;
@@ -46,15 +46,15 @@
   overflow: visible;
 }
 
-.FlexGrid .indicator.sell {
+.flex-grid .indicator.sell {
   color: red;
 }
 
-.FlexGrid .indicator.buy {
+.flex-grid .indicator.buy {
   color: green;
 }
 
-.FlexGrid .wj-header.wj-cell {
+.flex-grid .wj-header.wj-cell {
   color: inherit;
   background: #FFF;
   border: transparent;
@@ -63,65 +63,66 @@
   padding: .5rem;
 }
 
-.FlexGrid .wj-cell {
+.flex-grid .wj-cell {
   background-color: #fff;
   border: transparent;
   border-bottom: 1px solid #E6E6E6;
   padding: .5rem;
 }
 
-.FlexGrid .wj-detail {
+.flex-grid .wj-detail {
   padding: 0;
 }
 
-.FlexGrid .wj-rowheaders .wj-cell.wj-header {
-  padding: 1rem .5rem;
-  background: #fbfbfb;
+.flex-grid .wj-row:focus {
+  outline: none;
 }
 
-.FlexGrid .wj-rowheaders .wj-glyph-plus,
-.FlexGrid .wj-rowheaders .wj-glyph-minus {
+.flex-grid .wj-rowheaders .wj-cell.wj-header {
+  padding: 1rem .5rem;
+  background: #fbfbfb;
+  cursor: pointer;
+  border-right: 1px solid #E6E6E6;
+}
+
+.flex-grid .wj-rowheaders .wj-glyph-plus,
+.flex-grid .wj-rowheaders .wj-glyph-minus {
   top: calc(50% - 16px);
 }
 
-.FlexGrid .wj-row .wj-cell.wj-state-multi-selected:first-child,
-.FlexGrid .wj-row .wj-cell.wj-state-selected:first-child {
-  border-left: 1px solid #E6E6E6;
-}
-
-.FlexGrid .wj-cell.wj-frozen-row {
+.flex-grid .wj-cell.wj-frozen-row {
   border-bottom: 1px solid #D6D6D6;
 }
 
-.FlexGrid .wj-cell.wj-frozen-col {
+.flex-grid .wj-cell.wj-frozen-col {
   border-right: 1px solid #D6D6D6;
 }
 
-.FlexGrid .wj-header.wj-cell.wj-frozen-col {
+.flex-grid .wj-header.wj-cell.wj-frozen-col {
   border-right-color: transparent;
 }
 
-.FlexGrid .wj-cell > div {
+.flex-grid .wj-cell > div {
   position: relative;
   margin: 0;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.FlexGrid .wj-alt:not(.wj-state-selected):not(.wj-state-multi-selected) {
+.flex-grid .wj-alt:not(.wj-state-selected):not(.wj-state-multi-selected) {
   background-color: #fff;
 }
 
-.FlexGrid .wj-alt:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
+.flex-grid .wj-alt:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
   background: #fff;
 }
 
-.FlexGrid .wj-state-selected {
+.flex-grid .wj-state-selected {
   background: #F5F5F5;
   color: #000;
 }
 
-.FlexGrid .wj-state-multi-selected {
+.flex-grid .wj-state-multi-selected {
   background: #F5F5F5;
   color: #000;
 }

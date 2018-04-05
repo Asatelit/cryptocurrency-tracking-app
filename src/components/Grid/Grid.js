@@ -150,15 +150,15 @@ class Grid extends Component {
    * @arg {string] filterText
    */
   renderNotification = filterText => (
-    <div className="Helper">
+    <div className="helper">
       {filterText ? (
         <Fragment>
-          <FilterList className="Helper-icon" />
+          <FilterList className="helper-icon" />
           <div>No symbols found containing: {filterText}</div>
         </Fragment>
       ) : (
         <Fragment>
-          <PlaylistAdd className="Helper-icon" />
+          <PlaylistAdd className="helper-icon" />
           <div>Please add symbols to a list.</div>
         </Fragment>
       )}
@@ -171,11 +171,11 @@ class Grid extends Component {
     const columnsData = columns[section];
     const getDataItem = symbol => itemsSource.find(item => symbol === item.symbol);
     return (
-      <div className="Grid">
+      <div className="grid">
         {!itemsSource.length && this.renderNotification(filter)}
         <FlexGrid
           isReadOnly
-          className="FlexGrid"
+          className="flex-grid"
           ref={this.setFlexGridRef}
           selectionMode={SelectionMode.Row}
           autoGenerateColumns={false}

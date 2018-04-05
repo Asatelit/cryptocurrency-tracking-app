@@ -25,15 +25,15 @@ class TopBar extends Component {
     ];
     return (
       <Tabs
-        className="Tabs"
+        className="tabs"
         textColor="inherit"
-        classes={{ indicator: 'TabsIndicator' }}
+        classes={{ indicator: 'tabs-indicator' }}
         value={this.props.selectedTab}
         onChange={this.handleChangeTab}
       >
         {tabs.map(tab => (
           <Tab
-            classes={{ root: 'Tab' }}
+            classes={{ root: 'tab' }}
             key={tab.value}
             label={tab.label}
             value={tab.value}
@@ -46,12 +46,12 @@ class TopBar extends Component {
   renderFilterBox = () => {
     const { filter } = this.props;
     return (
-      <div className="Filter">
-        <div className="Filter-searchIcon">
+      <div className="filter">
+        <div className="filter__search-icon">
           <SearchIcon />
         </div>
         <input
-          className="Filter-input"
+          className="filter__input"
           placeholder="Type a symbol name to filter"
           value={filter}
           onChange={event =>
@@ -60,7 +60,7 @@ class TopBar extends Component {
         />
         {Boolean(filter) && (
           <IconButton
-            className="Filter-clearIcon"
+            className="filter__clear-icon"
             onClick={() => this.handleChangeFilterText('')}
           >
             <CloseIcon />
@@ -70,17 +70,12 @@ class TopBar extends Component {
     );
   };
 
-  // prettier-ignore
   render() {
     return (
-      <div className="TopBar">
+      <div className="topbar">
         <Row verticalAlignment="stretch">
-          <Column verticalAlignment="stretch">
-            {this.renderTabs()}
-          </Column>
-          <Column shrink>
-            {this.renderFilterBox()}
-          </Column>
+          <Column verticalAlignment="stretch">{this.renderTabs()}</Column>
+          <Column shrink>{this.renderFilterBox()}</Column>
         </Row>
       </div>
     );
@@ -88,7 +83,7 @@ class TopBar extends Component {
 }
 
 TopBar.propTypes = {
-  filter: PropTypes.string,
+  filter: PropTypes.string.isRequired,
   onChangeFilterText: PropTypes.func.isRequired,
   onChangeTab: PropTypes.func.isRequired,
   selectedTab: PropTypes.oneOf([
@@ -96,10 +91,6 @@ TopBar.propTypes = {
     AssetsTypes.PERFORMANCE,
     AssetsTypes.TECHNICAL,
   ]).isRequired,
-};
-
-TopBar.defaultProps = {
-  filter: '',
 };
 
 export default TopBar;

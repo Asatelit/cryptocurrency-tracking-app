@@ -23,7 +23,7 @@ class Settings extends Component {
   renderSwitch = params => {
     const { label, isChecked, key } = params;
     return (
-      <FormGroup key={key} className="FormGroup">
+      <FormGroup key={key} className="form-group">
         <FormControlLabel
           label={label}
           control={
@@ -51,9 +51,9 @@ class Settings extends Component {
       { key: 'isAutoUpdate', label: 'Auto Update', isChecked: isAutoUpdate },
     ];
     return (
-      <div className={`Settings ${isOpen ? 'Settings--open' : ''}`}>
-        <div className="Panel">
-          <Row className="Panel-head">
+      <div className={`settings ${isOpen ? 'settings_open' : ''}`}>
+        <div className="panel">
+          <Row className="panel-head">
             <Column>
               <Typography variant="title">Settings</Typography>
             </Column>
@@ -65,7 +65,7 @@ class Settings extends Component {
           </Row>
           <Divider />
           {switches.map(element => this.renderSwitch(element))}
-          <FormGroup className="FormGroup">
+          <FormGroup className="form-group">
             <FormLabel>Update Interval (s):</FormLabel>
             <Select
               value={updateInterval}
@@ -81,7 +81,7 @@ class Settings extends Component {
               <MenuItem value={60000}>60</MenuItem>
             </Select>
           </FormGroup>
-          <FormGroup className="FormGroup">
+          <FormGroup className="form-group">
             <FormLabel>Display density:</FormLabel>
             <Select
               value={rowHeight}

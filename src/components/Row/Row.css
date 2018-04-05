@@ -1,4 +1,4 @@
-.Row {
+.row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -7,12 +7,12 @@
   width: 100%;
 }
 
-.Row--left { justify-content: flex-start; }
-.Row--right { justify-content: flex-end; }
-.Row--center { justify-content: center; }
-.Row--justify { justify-content: space-between; }
-.Row--spaced { justify-content: space-around; }
-.Row--top { align-items: flex-start; }
-.Row--middle { align-items: center; }
-.Row--bottom { align-items: flex-end; }
-.Row--stretch { align-items: stretch; }
+.row_left { justify-content: flex-start; }
+.row_right { justify-content: flex-end; }
+.row_center { justify-content: center; }
+.row_justify { justify-content: space-between; }
+.row_spaced { justify-content: space-around; }
+.row_top { align-items: flex-start; }
+.row_middle { align-items: center; }
+.row_bottom { align-items: flex-end; }
+.row_stretch { align-items: stretch; }

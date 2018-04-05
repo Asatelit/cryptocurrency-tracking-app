@@ -1,4 +1,4 @@
-.ToolBar {
+.toolbar {
   flex: 0 0 auto;
   box-sizing: border-box;
   display: flex;
@@ -7,19 +7,18 @@
   color: #4285F4;
 }
 
-.ToolBar .Caption {
+.toolbar .caption {
   font-size: 1rem;
   margin-right: 1rem;
 }
 
-
-.ToolBar .Button-label {
+.toolbar .button-label {
   letter-spacing: .05em;
   margin-left: .3em;
   font-size: .8rem;
 }
 
-.ColumnsMenuForm {
-  padding: 0 2rem;
+.g_menu-inner {
+  padding: 0 1rem;
   outline: none;
 }

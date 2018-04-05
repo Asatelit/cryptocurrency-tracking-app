@@ -1,4 +1,4 @@
-.TopBar {
+.topbar {
   background: #3B78E7;
   color: white;
   height: 92px;
@@ -7,33 +7,27 @@
   box-sizing: border-box;
 }
 
-
-.TopBar .Tabs {
+.topbar .tabs {
   display: flex;
   padding-top: 16px;
 }
 
-.TopBar .TabsIndicator {
+.topbar .tabs-indicator {
   background: #FFC500;
   height: 4px;
 }
 
-.TopBar .Tab {
+.topbar .tab {
   letter-spacing: .05em;
 }
 
-
-.TopBar .Filter {
+.topbar .filter {
   position: relative;
   border-radius: 2px;
   background: rgba(255, 255, 255, .15);
 }
 
-.TopBar .Filter-searchIcon:hover {
-  background: rgba(255, 255, 255, .25);
-}
-
-.TopBar .Filter-searchIcon {
+.topbar .filter__search-icon {
   width: 72px;
   height: 100%;
   display: flex;
@@ -43,7 +37,11 @@
   justify-content: center;
 }
 
-.TopBar .Filter-clearIcon {
+.topbar .filter__search-icon:hover {
+  background: rgba(255, 255, 255, .25);
+}
+
+.topbar .filter__clear-icon {
   position: absolute;
   right: 0;
   top: 0;
@@ -56,11 +54,11 @@
   opacity: .7;
 }
 
-.TopBar .Filter-clearIcon:hover {
+.topbar .filter__clear-icon:hover {
   opacity: 1;
 }
 
-.TopBar .Filter-input {
+.topbar .filter__input {
   font: inherit;
   padding: 8px 8px 8px 72px;
   border: 0;
@@ -71,20 +69,20 @@
   margin: 0;
   color: inherit;
   transition: width 300ms cubic-bezier(.4, 0, .2, 1) 0ms;
-  background: rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .1);
   width: 240px;
 }
 
-.TopBar .Filter-input::placeholder {
-  color: white;
-  opacity: .8;
-}
-
-.TopBar .Filter-input:focus {
+.topbar .filter__input:focus {
   outline: 0;
   width: 300px;
 }
 
-.TopBar .Filter-input:focus::placeholder {
+.topbar .filter__input::placeholder {
+  color: white;
+  opacity: .8;
+}
+
+.topbar .filter__input:focus::placeholder {
   opacity: 0;
 }

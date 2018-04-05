@@ -1,11 +1,11 @@
-.Grid {
+.grid {
   display: flex;
   flex: 1 1 auto;
   height: 100%;
   position: relative;
 }
 
-.Grid .Helper {
+.grid .helper {
   top: 0;
   right: 0;
   left: 0;
@@ -22,7 +22,7 @@
   z-index: 4;
 }
 
-.Grid .Helper-icon {
+.grid .helper-icon {
   opacity: .7;
   font-size: 3rem;
   padding: 1rem;
