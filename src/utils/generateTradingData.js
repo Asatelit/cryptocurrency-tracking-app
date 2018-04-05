@@ -1,6 +1,11 @@
 import randBetween from './randBetween';
 
-export default function generateTradingData(symbols, tickers, histLenght = 60) {
+export default function generateTradingData(
+  symbols,
+  tickers,
+  trading = [],
+  histLength = 60,
+) {
   const priceRange = price => {
     const priceOut = randBetween(price / 1.2, price * 1.2);
     const min = Math.min(price, priceOut);
@@ -19,10 +24,11 @@ export default function generateTradingData(symbols, tickers, histLenght = 60) {
       id: symbol,
       priceUsd: '0',
     };
-    const ticker = tickers.find(entry => symbol === entry.symbol) || fallout;
-    const value = parseFloat(ticker.priceUsd);
-    const price = priceRange(randBetween(value / 1.1, value * 1.1));
-    let open = price.in;
+    const fallbackTicker = tickers.find(entry => symbol === entry.symbol) || fallout;
+    const ticker = trading.find(entry => symbol === entry.symbol) || fallbackTicker;
+    const value = parseFloat(ticker.priceUsd || ticker.close);
+    const price = priceRange(value);
+    let open = price.out;
     const entry = {
       id: ticker.id,
       symbol: ticker.symbol,
@@ -46,19 +52,26 @@ export default function generateTradingData(symbols, tickers, histLenght = 60) {
       performanceYear: randBetween(-100, 100),
       performanceYear3: randBetween(-100, 100),
     };
-    const history = Array.from({ length: histLenght }, (el, index) => {
-      const priceHist = priceRange(open);
-      open = priceHist.out;
-      return {
-        close: priceHist.in,
-        open: priceHist.out,
-        high: priceHist.max,
-        low: priceHist.min,
-        volume: randBetween(10, 10000),
-        time: new Date(new Date().getTime() - (index + 1) * 10000 * 60),
-      };
-    });
 
+    let history = [];
+
+    if (ticker.history) {
+      history = ticker.history.splice(0, histLength);
+    } else {
+      history = Array.from({ length: histLength }, (el, index) => {
+        const priceHist = priceRange(open);
+        open = priceHist.out;
+        return {
+          index,
+          close: priceHist.in,
+          open: priceHist.out,
+          high: priceHist.max,
+          low: priceHist.min,
+          volume: randBetween(10, 10000),
+          time: new Date(new Date().getTime() - (index + 1) * 1000 * 60),
+        };
+      });
+    }
     return {
       ...entry,
       history: [entry, ...history],

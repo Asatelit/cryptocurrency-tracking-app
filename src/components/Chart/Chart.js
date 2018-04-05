@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* Wijmo */
-import * as wjChart from 'wijmo/wijmo.chart';
+import { ChartElement, ChartType, Position, SelectionMode } from 'wijmo/wijmo.chart';
 import { FlexChart } from 'wijmo/wijmo.react.chart';
 import { FlexChartRangeSelector } from 'wijmo/wijmo.react.chart.interaction';
 /* CSS */
 import './Chart.css';
 
-/* React components that encapsulate Wijmo FlexChart */
+/**
+ * ## React components that encapsulate Wijmo FlexChart
+ * http://demos.wijmo.com/5/Angular/WijmoHelp/WijmoHelp/topic/wijmo.react.Module.html
+ */
 class Chart extends Component {
   state = { axisMin: null, axisMax: null };
 
@@ -23,18 +26,18 @@ class Chart extends Component {
     const tradeBinding = 'high,low,open,close';
     const binding = 'volume';
 
-    if (pointIndex >= 0 && chartElement === wjChart.ChartElement.SeriesSymbol) {
+    if (pointIndex >= 0 && chartElement === ChartElement.SeriesSymbol) {
       if (series.binding === tradeBinding || series.binding === binding) {
         // get current and previous values
         const { chart } = series;
         const { items } = chart.collectionView;
-        const valNow = items[pointIndex].close;
-        const valPrev = items[pointIndex - 1] ? items[pointIndex - 1].close : valNow;
+        const valClose = items[pointIndex].close;
+        const valOpen = items[pointIndex].open;
 
         // Set default width of the stroke
         formatterEngine.strokeWidth = '1px';
 
-        if (valNow > valPrev) {
+        if (valOpen > valClose) {
           formatterEngine.fill = '#CB2C77';
           formatterEngine.stroke = '#CB2C77';
         } else {
@@ -61,24 +64,22 @@ class Chart extends Component {
       <div className="Chart">
         <FlexChart
           className="FlexChart"
-          bindingX="time"
-          chartType={wjChart.ChartType.Candlestick}
-          selectionMode={wjChart.SelectionMode.Point}
+          chartType={ChartType.Candlestick}
+          selectionMode={SelectionMode.Point}
           itemsSource={dataItem.history}
           series={[{ binding: 'high,low,open,close' }]}
-          axisX={{ position: wjChart.Position.None, min: axisMin, max: axisMax }}
-          legend={{ position: wjChart.Position.None }}
+          axisX={{ position: Position.None, min: axisMin, max: axisMax, reversed: true }}
+          legend={{ position: Position.None }}
           itemFormatter={this.handleItemFormatter}
         />
         <FlexChart
           className="DataRange"
-          bindingX="time"
           plotMargin="6 0 6 80"
           itemsSource={dataItem.history}
           series={[{ binding: 'volume' }]}
-          axisX={{ position: wjChart.Position.None }}
-          axisY={{ position: wjChart.Position.None }}
-          legend={{ position: wjChart.Position.None }}
+          axisX={{ position: Position.None }}
+          axisY={{ position: Position.None }}
+          legend={{ position: Position.None }}
           itemFormatter={this.handleItemFormatter}
         >
           <FlexChartRangeSelector

@@ -11,8 +11,12 @@
 .DetailPanel .Headline {
   display: flex;
   align-items: center;
-  color: #73CA21;
+  color: #CB2C77;
   margin-left: -1rem;
+}
+
+.DetailPanel .Headline--isRising {
+  color: #73CA21;
 }
 
 

@@ -2,7 +2,7 @@ import humps from 'humps';
 import ActionTypes from '../constants/ActionTypes';
 import generateTradingData from '../utils/generateTradingData';
 import { selectPortfolio, editPortfolio } from './portfoliosActions';
-import { getTradingData, getTickers } from './dataActions';
+import { updateTradingData, updateTickers } from './dataActions';
 
 /**
  * Request trading market data
@@ -13,12 +13,13 @@ export function requestTradingData() {
       .then(response => response.json())
       .then(data => {
         const { selected, list } = getStore().portfolios;
+        const { trading } = getStore().data;
         const portfolio = list.find(entry => entry.name === selected);
         const tickers = humps.camelizeKeys(data);
-        const trading = generateTradingData(portfolio.symbols, tickers);
+        const tradingData = generateTradingData(portfolio.symbols, tickers, trading);
 
-        dispatch(getTradingData(trading));
-        dispatch(getTickers(tickers));
+        dispatch(updateTradingData(tradingData));
+        dispatch(updateTickers(tickers));
       })
       .catch(ex => {
         console.error('parsing failed', ex);
@@ -37,7 +38,7 @@ export function changeCurrentPortfolio(name) {
     const portfolio = list.find(entry => entry.name === name);
     const trading = generateTradingData(portfolio.symbols, tickers);
     dispatch(selectPortfolio(name));
-    dispatch(getTradingData(trading));
+    dispatch(updateTradingData(trading));
   };
 }
 
@@ -49,14 +50,14 @@ export function changeCurrentPortfolio(name) {
  * @arg {string] portfolio.data.name - The new name of the portfolio
  * @arg {Array] portfolio.data.symbols - The new symbols
  */
-export function updateTradingData(portfolio) {
+export function updateData(portfolio) {
   return (dispatch, getStore) => {
     const { selected } = getStore().portfolios;
     const { tickers } = getStore().data;
     const trading = generateTradingData(portfolio.data.symbols, tickers);
     dispatch(editPortfolio(portfolio));
     return selected === portfolio.name
-      ? dispatch(getTradingData(trading))
+      ? dispatch(updateTradingData(trading))
       : Promise.resolve();
   };
 }

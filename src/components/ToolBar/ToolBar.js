@@ -44,10 +44,6 @@ class ToolBar extends Component {
               <PlayListIcon />
               <span className="Button-label">Symbols</span>
             </Button>
-            <Button color="inherit" onClick={this.handleRefresh}>
-              <RefreshIcon />
-              <span className="Button-label">Refresh</span>
-            </Button>
             <div>
               <Button
                 color="inherit"
@@ -87,6 +83,10 @@ class ToolBar extends Component {
             </div>
           </Column>
           <Column shrink horizontalAlignment="right">
+            <Button color="inherit" onClick={this.handleRefresh}>
+              <RefreshIcon />
+              <span className="Button-label">Refresh</span>
+            </Button>
             <Button color="inherit" onClick={this.handlePrint}>
               <PrintIcon />
               <span className="Button-label">Print</span>

@@ -113,7 +113,7 @@ class App extends Component {
               portfolio => portfolio.name === portfolios.selected,
             )}
             onClose={appActions.closeSymbolsDialog}
-            onSubmit={appActions.updateTradingData}
+            onSubmit={appActions.updateData}
           />
         )}
         <AddPortfolio
@@ -234,7 +234,7 @@ App.propTypes = {
     requestTradingData: PropTypes.func,
     toggleSettingsPanel: PropTypes.func,
     updateSettings: PropTypes.func,
-    updateTradingData: PropTypes.func,
+    updateData: PropTypes.func,
   }).isRequired,
 };
 

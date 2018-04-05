@@ -1,6 +1,6 @@
-import * as wijmo from 'wijmo/wijmo';
-import * as wijmoGrid from 'wijmo/wijmo.grid';
-import * as wijmoGridPdf from 'wijmo/wijmo.grid.pdf';
+import { Globalize, PrintDocument, escapeHtml } from 'wijmo/wijmo';
+import { CellType, HeadersVisibility } from 'wijmo/wijmo.grid';
+import { FlexGridPdfConverter, ScaleMode } from 'wijmo/wijmo.grid.pdf';
 
 function renderRow(panel, r) {
   let tr = '';
@@ -15,10 +15,10 @@ function renderRow(panel, r) {
         // prettier-ignore
         const style = `width: ${col.renderSize}px; text-align: ${col.getAlignment()}; padding-right: 6px;`;
         let content = panel.getCellData(r, c, true);
-        if (!row.isContentHtml && !col.isContentHtml) content = wijmo.escapeHtml(content);
+        if (!row.isContentHtml && !col.isContentHtml) content = escapeHtml(content);
 
         // add cell to row
-        if (panel.cellType === wijmoGrid.CellType.ColumnHeader) {
+        if (panel.cellType === CellType.ColumnHeader) {
           tr += `<th style="${style}">${content}</th>`;
         } else {
           // show boolean values as checkboxes
@@ -59,11 +59,11 @@ function getSparklines(data) {
   return `<svg><g>${svg.join()}</g></svg>`;
 }
 
-function formatDynamicCell(cell, item, col, history, flare) {
+function formatDynamicCell(item, col, history, flare) {
   const tradeHistory = [...item.history].splice(0, 10); // get last 10 elements
   tradeHistory.reverse();
   const hist = tradeHistory.map(element => element[history]);
-  const change = `${wijmo.Globalize.format(item.chg / item.open * 100, 'n1')}%`;
+  const change = `${Globalize.format(item.chg / item.open * 100, 'n1')}%`;
   const glyph = item.chg > +0.001 ? 'up' : item.chg < -0.001 ? 'down' : 'circle'; // eslint-disable-line
   const spark = getSparklines(hist); // sparklines
   const dir = glyph === 'circle' ? 'none' : glyph; // change direction
@@ -126,7 +126,7 @@ function renderTable(flex) {
   // table
   return [
     '<table>',
-    `${flex.headersVisibility && wijmoGrid.HeadersVisibility.Column ? head : ''}`,
+    `${flex.headersVisibility && HeadersVisibility.Column ? head : ''}`,
     `${body}`,
     '</table>',
   ].join('');
@@ -137,7 +137,7 @@ function renderTable(flex) {
  * @param {Object} grid - Wijmo FlexGrid
  */
 export function print(grid) {
-  const doc = new wijmo.PrintDocument({
+  const doc = new PrintDocument({
     title: 'PrintDocument',
     copyCss: true,
   });
@@ -157,8 +157,8 @@ export function print(grid) {
  * @param {Object} grid - Wijmo FlexGrid
  */
 export function pdf(grid) {
-  wijmoGridPdf.FlexGridPdfConverter.export(grid, 'FlexGrid.pdf', {
-    scaleMode: wijmoGridPdf.ScaleMode.PageWidth,
+  FlexGridPdfConverter.export(grid, 'FlexGrid.pdf', {
+    scaleMode: ScaleMode.PageWidth,
     documentOptions: {
       compress: true,
       header: { declarative: { text: '\t&[Page] of &[Pages]' } },
@@ -176,12 +176,11 @@ export function pdf(grid) {
 
 /**
  * Custom cell painting.
- * @param {Object} cell
  * @param {Object} item
  * @param {Object} col
  * @param {boolean} flare
  */
-export function formatCell(cell, item, col, flare) {
+export function formatCell(item, col, flare) {
   let result = null;
   switch (col.binding) {
     case 'technicalMinutes15':
@@ -218,10 +217,10 @@ export function formatCell(cell, item, col, flare) {
       result = formatPerformanceIndicator(item, 'performanceYear3');
       break;
     case 'chg':
-      result = formatDynamicCell(cell, item, col, 'close', flare);
+      result = formatDynamicCell(item, col, 'close', flare);
       break;
     default:
-      result = wijmo.Globalize.format(item[col.binding], col.format);
+      result = Globalize.format(item[col.binding], col.format);
       break;
   }
   return result;

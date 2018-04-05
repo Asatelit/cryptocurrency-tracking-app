@@ -1,10 +1,8 @@
-import keyMirror from '../utils/keyMirror';
-
-const AssetsTypes = keyMirror({
-  OVERVIEW: null,
-  TECHNICAL: null,
-  PERFORMANCE: null,
-  WJ_GRID: null,
-});
+// Enumeration
+const AssetsTypes = {
+  OVERVIEW: 'OVERVIEW',
+  TECHNICAL: 'TECHNICAL',
+  PERFORMANCE: 'PERFORMANCE',
+};
 
 export default AssetsTypes;

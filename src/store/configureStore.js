@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 import reducer from '../reducers/index';
 
@@ -11,12 +12,7 @@ export default function configureStore(initialState) {
   // Redux DevTools Extension. Hot Reloading with Time Travel helps to boost
   // the developer’s productivity significantly and makes the development fun.
   // https://github.com/zalmoxisus/redux-devtools-extension
-  /* eslint-disable no-underscore-dangle */
-  const composeEnhancers =
-    process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-      : compose;
-  /* eslint-enable */
+  const composeEnhancers = composeWithDevTools({});
 
   const enhancer = composeEnhancers(
     // Middleware is the suggested way to extend Redux with custom functionality.

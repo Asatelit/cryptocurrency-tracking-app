@@ -57,7 +57,7 @@ Whenever you modify any of the source files inside the /src folder, the module b
 will recompile the app on the fly and refresh all the connected browsers.
 
 Note that the npm start command launches the app in development mode, the compiled output files are not optimized
-and minimized in this case.
+and minimized in this case. For more information, check out the additional documentation [here](./doc/README.md).
 
 ### How to Build
 
@@ -77,7 +77,21 @@ Your app is ready to be deployed.
 
 ### References
 
-This project was bootstrapped with:
-* [Create React App](./doc/README.md).
-* [Wijmo FlexGrid](https://www.grapecity.com/en/wijmo-flexgrid) - Fast, high-performance grid.
-* [Wijmo FlexChart](https://www.grapecity.com/en/wijmo-flexchart) - A Flexible JavaScript Chart Control.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and powered by Wijmo components:
+* [FlexGrid](https://www.grapecity.com/en/wijmo-flexgrid) - Fast, high-performance grid.
+* [FlexChart](https://www.grapecity.com/en/wijmo-flexchart) - A Flexible JavaScript Chart Control.
+
+#### Included dependencies:
+
+* [classnames](https://github.com/JedWatson/classnames) -  utility for conditionally joining classNames together.
+* [humps](https://github.com/domchristie/humps) - Underscore-to-camelCase converter for strings and object keys.
+* [material-ui-icons](https://www.npmjs.com/package/material-ui-icons) - provides the Google Material icons packaged as a set of React components.
+* [material-ui](https://github.com/mui-org/material-ui) - components that implement Google's Material Design.
+* [prop-types](https://www.npmjs.com/package/prop-types) - runtime type checking for React props and similar objects.
+* [react-dom](https://github.com/facebook/react) - serves as the entry point of the DOM-related rendering paths.
+* [react-redux](https://github.com/reactjs/redux/tree/master/docs) - complete state management.
+* [react-router-dom](https://www.npmjs.com/package/react-router-dom) - DOM bindings for React Router.
+* [react-scripts](https://github.com/facebook/create-react-app) - create React apps with no build configuration.
+* [react](https://github.com/facebook/react) - library for building user interfaces.
+* [redux-thunk](https://github.com/gaearon/redux-thunk) - async operations.
+* [wijmo](https://www.npmjs.com/package/wijmo) - Enterprise UI controls.

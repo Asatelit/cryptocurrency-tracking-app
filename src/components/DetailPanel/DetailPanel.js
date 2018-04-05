@@ -49,7 +49,10 @@ class DetailPanel extends Component {
       <div className="DetailPanel">
         <Row>
           <Column className="DetailPanel-col" flexDirection="column" shrink>
-            <Typography className="Headline" variant="headline">
+            <Typography
+              className={`Headline ${isRising ? 'Headline--isRising' : ''}`}
+              variant="headline"
+            >
               {isRising ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
               {dataItem.close.toFixed(2)}
             </Typography>

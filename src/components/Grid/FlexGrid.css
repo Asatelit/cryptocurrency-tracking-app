@@ -84,6 +84,11 @@
   top: calc(50% - 16px);
 }
 
+.FlexGrid .wj-row .wj-cell.wj-state-multi-selected:first-child,
+.FlexGrid .wj-row .wj-cell.wj-state-selected:first-child {
+  border-left: 1px solid #E6E6E6;
+}
+
 .FlexGrid .wj-cell.wj-frozen-row {
   border-bottom: 1px solid #D6D6D6;
 }

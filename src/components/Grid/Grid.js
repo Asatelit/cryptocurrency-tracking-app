@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 /* Wijmo */
-import * as wjGrid from 'wijmo/wijmo.grid';
-import * as wjGridDetail from 'wijmo/wijmo.grid.detail';
+import { Globalize } from 'wijmo/wijmo';
+import { SelectionMode } from 'wijmo/wijmo.grid';
+import { FlexGridDetailProvider } from 'wijmo/wijmo.grid.detail';
 import { FlexGrid, FlexGridColumn } from 'wijmo/wijmo.react.grid';
 /* Material UI */
 import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
@@ -17,53 +18,77 @@ import DetailPanel from '../DetailPanel';
 import './Grid.css';
 import './FlexGrid.css';
 
+/**
+ * ## React components that encapsulate Wijmo FlexGrid
+ * http://demos.wijmo.com/5/Angular/WijmoHelp/WijmoHelp/topic/wijmo.react.Module.html
+ */
 class Grid extends Component {
+  state = { detailCell: null, detailCellSymbol: null };
+
   componentWillReceiveProps(nextProps) {
-    const grid = this.flexGrid.control;
-    const { settings, itemsSource } = this.props;
+    const grid = this.flexGridRef.control;
+    const { itemsSource, settings } = this.props;
     const nextItemSource = nextProps.itemsSource;
+    const nextSettings = nextProps.settings;
+    const isChangedItemsSource = itemsSource.length !== nextItemSource.length;
     const isUpdated = (a, b) => JSON.stringify(a) !== JSON.stringify(b);
 
-    // return if there are not any updates available
+    // invalidates the grid causing an asynchronous refresh
+    if (nextSettings.isCustomCells !== settings.isCustomCells) grid.invalidate();
+
+    // breaks if there are not any updates available
     if (!isUpdated(nextItemSource, itemsSource)) return;
 
-    if (itemsSource.length === nextItemSource.length) {
-      // select the modified rows only
-      const modified = nextItemSource.filter((entry, index) =>
-        isUpdated(entry, itemsSource[index]),
-      );
-
-      modified.forEach(item => {
-        const storedRow = this.cellElements[item.symbol]; // get stored row
-        if (storedRow) {
-          grid.columns.forEach(col => {
-            const storedCell = storedRow[col.binding]; // get stored cell
-            if (storedCell) {
-              storedCell.innerHTML = settings.isCustomCells
-                ? `<div>${formatCell(storedCell, item, col, true)}</div>`
-                : `<div>${storedCell.innerHTML}</div>`;
-            }
-          });
-        }
-      });
-    } else {
-      // update itemsSource
-      grid.itemsSource = nextProps.itemsSource;
-    }
+    // update itemsSource if it changed
+    if (isChangedItemsSource) grid.itemsSource = nextProps.itemsSource;
+    // get the modified rows
+    const modified = isChangedItemsSource
+      ? nextProps.itemsSource
+      : nextItemSource.filter((entry, index) => isUpdated(entry, itemsSource[index]));
+    // update the modified rows
+    modified.forEach(dataItem => {
+      const storedRow = this.cellElements[dataItem.symbol]; // get stored row
+      if (storedRow) {
+        grid.columns.forEach(col => {
+          const cell = storedRow[col.binding]; // get stored cell
+          if (cell) {
+            this.handleFormatCell(cell, dataItem, col, nextSettings.isCustomCells);
+          }
+        });
+      }
+    });
   }
 
+  /**
+   * Callback to store a reference to a FlexGrid node.
+   * @arg {Object] ref
+   */
   setFlexGridRef = ref => {
-    this.flexGrid = ref;
+    this.flexGridRef = ref;
     this.props.onUpdateReference(ref);
   };
 
   cellElements = {}; // stored cell elements
-  flexGrid = null; // wjFlexGrid reference
-  requestClearCells = false;
+  flexGridRef = null; // wjFlexGrid reference
+  requestClearCells = false; // request clear cell elements on next formatItem
+
+  /**
+   * Customize cell appearance.
+   * @arg {HTMLElement] cell
+   * @arg {Object] dataItem
+   * @arg {Object] col
+   * @arg {boolean] isCustomPaint
+   * @arg {boolean] [flare=true]
+   */
+  handleFormatCell = (cell, dataItem, col, isCustomPaint, flare = true) => {
+    // eslint-disable-next-line
+    cell.innerHTML = isCustomPaint
+      ? `<div>${formatCell(dataItem, col, flare)}</div>`
+      : `<div>${Globalize.format(dataItem[col.binding], col.format)}</div>`;
+  };
 
   /**
    * Occurs after the grid has updated its internal layout
-   * @arg {Object] [event] - Event data.
    */
   handleUpdatingView = () => {
     // clear cell elements on next formatItem
@@ -76,34 +101,28 @@ class Grid extends Component {
    * @arg {Object] cellRange - Range of cells affected by the event.
    */
   handleFormatItem = (gridPanel, cellRange) => {
-    const { cell, col, row, panel } = cellRange;
     const { rows, columns, cells } = gridPanel;
-    const { settings } = this.props;
+    const { cell, col, row, panel } = cellRange;
+    const { itemsSource, settings } = this.props;
 
     if (cells === panel) {
       const column = columns[col];
-      const item = rows[row].dataItem;
+      const rowDataItem = rows[row].dataItem || {};
+      const symbol = rowDataItem.symbol || null;
+      const dataItem = itemsSource.find(entry => symbol === entry.symbol);
 
       // clear cell elements
       if (this.requestClearCells) {
-        this.requestClearCells = false;
         this.cellElements = {};
+        this.requestClearCells = false;
       }
 
-      if (item) {
+      if (dataItem) {
         // create stored cell element (if it is needed)
-        if (!this.cellElements[item.symbol]) {
-          this.cellElements[item.symbol] = { item };
-        }
-        // store cell element
-        this.cellElements[item.symbol][column.binding] = cell;
-        // custom painting
-        cell.innerHTML = settings.isCustomCells
-          ? `<div>${formatCell(cell, item, column, false)}</div>`
-          : `<div>${cell.innerHTML}</div>`;
+        if (!this.cellElements[symbol]) this.cellElements[symbol] = {};
+        this.cellElements[symbol][column.binding] = cell; // store cell element
+        this.handleFormatCell(cell, dataItem, column, settings.isCustomCells); // custom painting
       }
-    } else {
-      cell.innerHTML = `<div>${cell.innerHTML}</div>`;
     }
   };
 
@@ -113,34 +132,44 @@ class Grid extends Component {
    */
   handleInitialized = gridPanel => {
     // Create detail provider
-    const detailProvider = new wjGridDetail.FlexGridDetailProvider(gridPanel, {});
+    const detailProvider = new FlexGridDetailProvider(gridPanel, {});
+    // set the callback function that creates detail cells
     detailProvider.createDetailCell = row => {
       const detailCell = document.createElement('div');
-      // Attach detail panel
-      ReactDOM.render(<DetailPanel dataItem={row.dataItem} />, detailCell);
+      this.setState({ detailCell, detailCellSymbol: row.dataItem.symbol });
       return detailCell;
+    };
+    // set the callback function that disposes of detail cells.
+    detailProvider.disposeDetailCell = () => {
+      this.setState({ detailCell: null, detailCellSymbol: null });
     };
   };
 
+  /**
+   * Renders additional information.
+   * @arg {string] filterText
+   */
   renderNotification = filterText => (
     <div className="Helper">
       {filterText ? (
-        <React.Fragment>
+        <Fragment>
           <FilterList className="Helper-icon" />
           <div>No symbols found containing: {filterText}</div>
-        </React.Fragment>
+        </Fragment>
       ) : (
-        <React.Fragment>
+        <Fragment>
           <PlaylistAdd className="Helper-icon" />
           <div>Please add symbols to a list.</div>
-        </React.Fragment>
+        </Fragment>
       )}
     </div>
   );
 
   render() {
     const { columns, section, settings, filter, itemsSource } = this.props;
+    const { detailCell, detailCellSymbol } = this.state;
     const columnsData = columns[section];
+    const getDataItem = symbol => itemsSource.find(item => symbol === item.symbol);
     return (
       <div className="Grid">
         {!itemsSource.length && this.renderNotification(filter)}
@@ -148,7 +177,7 @@ class Grid extends Component {
           isReadOnly
           className="FlexGrid"
           ref={this.setFlexGridRef}
-          selectionMode={wjGrid.SelectionMode.Row}
+          selectionMode={SelectionMode.Row}
           autoGenerateColumns={false}
           rows={{ defaultSize: settings.rowHeight }}
           columnHeaders={{ rows: { defaultSize: 78 } }}
@@ -162,6 +191,12 @@ class Grid extends Component {
             <FlexGridColumn key={column.binding || index} {...column} />
           ))}
         </FlexGrid>
+        {/* Row that contains a single detail cell spanning all grid columns */}
+        {Boolean(detailCell) &&
+          ReactDOM.createPortal(
+            <DetailPanel dataItem={getDataItem(detailCellSymbol)} />,
+            detailCell,
+          )}
       </div>
     );
   }
@@ -169,7 +204,6 @@ class Grid extends Component {
 
 // prettier-ignore
 Grid.propTypes = {
-  filter: PropTypes.string,
   section: PropTypes.oneOf([
     Assets.OVERVIEW,
     Assets.PERFORMANCE,
@@ -191,11 +225,8 @@ Grid.propTypes = {
     rowHeight: PropTypes.number,
     updateInterval: PropTypes.number,
   }).isRequired,
+  filter: PropTypes.string.isRequired,
   onUpdateReference: PropTypes.func.isRequired,
-};
-
-Grid.defaultProps = {
-  filter: '',
 };
 
 export default Grid;
