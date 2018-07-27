@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "Yuri Kuschinsky",
   "description": "A sample financial app for keeping track of the cryptocurrency market",
+  "homepage": "/projects/cryptocurrency-tracking-app/",
   "repository": {
     "type": "git",
     "url": "https://github.com/Asatelit/cryptocurrency-tracking-app.git"
@@ -14,29 +15,29 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "classnames": "2.2.5",
+    "classnames": "2.2.6",
     "humps": "2.0.1",
     "material-ui": "1.0.0-beta.40",
     "material-ui-icons": "1.0.0-beta.36",
-    "prop-types": "15.6.1",
-    "react": "16.3.0",
-    "react-dom": "16.3.0",
+    "prop-types": "15.6.2",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
     "react-redux": "5.0.7",
-    "react-router-dom": "4.2.2",
-    "react-scripts": "1.1.1",
-    "redux": "3.7.2",
-    "redux-thunk": "2.2.0",
-    "wijmo": "5.20181.436"
+    "react-router-dom": "4.3.1",
+    "react-scripts": "1.1.4",
+    "redux": "4.0.0",
+    "redux-thunk": "2.3.0",
+    "wijmo": "5.20182.500"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.46.1",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.7.0",
-    "prettier": "^1.11.1",
-    "redux-devtools-extension": "^2.13.2"
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.10.0",
+    "prettier": "^1.13.7",
+    "redux-devtools-extension": "^2.13.5"
   }
 }

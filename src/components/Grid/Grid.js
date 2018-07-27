@@ -28,10 +28,37 @@ class Grid extends Component {
   componentWillReceiveProps(nextProps) {
     const grid = this.flexGridRef.control;
     const { itemsSource, settings } = this.props;
+    const { detailCell } = this.state;
     const nextItemSource = nextProps.itemsSource;
     const nextSettings = nextProps.settings;
     const isChangedItemsSource = itemsSource.length !== nextItemSource.length;
+
     const isUpdated = (a, b) => JSON.stringify(a) !== JSON.stringify(b);
+
+    const updateGrid = () => {
+      this.canRenderDetails = true;
+
+      // update itemsSource if it changed
+      if (isChangedItemsSource) grid.itemsSource = nextProps.itemsSource;
+
+      // get the modified rows
+      const modified = isChangedItemsSource
+        ? nextProps.itemsSource
+        : nextItemSource.filter((entry, index) => isUpdated(entry, itemsSource[index]));
+
+      // update the modified rows
+      modified.forEach(dataItem => {
+        const storedRow = this.cellElements[dataItem.symbol]; // get stored row
+        if (storedRow) {
+          grid.columns.forEach(col => {
+            const cell = storedRow[col.binding]; // get stored cell
+            if (cell) {
+              this.handleFormatCell(cell, dataItem, col, nextSettings.isCustomCells);
+            }
+          });
+        }
+      });
+    };
 
     // invalidates the grid causing an asynchronous refresh
     if (nextSettings.isCustomCells !== settings.isCustomCells) grid.invalidate();
@@ -39,24 +66,13 @@ class Grid extends Component {
     // breaks if there are not any updates available
     if (!isUpdated(nextItemSource, itemsSource)) return;
 
-    // update itemsSource if it changed
-    if (isChangedItemsSource) grid.itemsSource = nextProps.itemsSource;
-    // get the modified rows
-    const modified = isChangedItemsSource
-      ? nextProps.itemsSource
-      : nextItemSource.filter((entry, index) => isUpdated(entry, itemsSource[index]));
-    // update the modified rows
-    modified.forEach(dataItem => {
-      const storedRow = this.cellElements[dataItem.symbol]; // get stored row
-      if (storedRow) {
-        grid.columns.forEach(col => {
-          const cell = storedRow[col.binding]; // get stored cell
-          if (cell) {
-            this.handleFormatCell(cell, dataItem, col, nextSettings.isCustomCells);
-          }
-        });
-      }
-    });
+    // unmounts detail rows in case of changing the itemSource
+    if (isChangedItemsSource && detailCell) {
+      this.canRenderDetails = false;
+      this.forceUpdate(() => updateGrid());
+    } else {
+      updateGrid();
+    }
   }
 
   /**
@@ -68,6 +84,7 @@ class Grid extends Component {
     this.props.onUpdateReference(ref);
   };
 
+  canRenderDetails = true;
   cellElements = {}; // stored cell elements
   flexGridRef = null; // wjFlexGrid reference
   requestClearCells = false; // request clear cell elements on next formatItem
@@ -192,7 +209,7 @@ class Grid extends Component {
           ))}
         </FlexGrid>
         {/* Row that contains a single detail cell spanning all grid columns */}
-        {Boolean(detailCell) &&
+        {Boolean(detailCell && this.canRenderDetails) &&
           ReactDOM.createPortal(
             <DetailPanel dataItem={getDataItem(detailCellSymbol)} />,
             detailCell,

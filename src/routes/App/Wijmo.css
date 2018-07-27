@@ -1,12 +1,11 @@
-﻿/* Wijmo Control */
+/* Wijmo Control */
 
 /* Primary wj control style - applies to all controls */
 .wj-content {
     display: inline-block;
     border: 1px solid rgba(0,0,0,0.2);
     border-radius: 4px;
-    background-color: #fff;
-    outline: none;
+    background: #fff;
     box-sizing: border-box;
 }
 
@@ -20,45 +19,52 @@
     }
 
 .wj-control {
-    outline: none;
+    user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    user-select: none;
 }
 
-/*
-  Required to make contenteditable work on iOS
-  http://stackoverflow.com/questions/21295698/html5-contenteditable-attribute-not-working-properly-on-ios7-mobile-safari
-*/
-.wj-control [contenteditable] {
-    -webkit-user-select: text;
-    user-select: text;
-}
+    /* Remove outline focus */
+    .wj-control,
+    .wj-control *:focus,
+    .wj-control a:focus {
+        outline: none; /* remove outline focus */
+    }
 
+    /*
+      Required to make contenteditable work on iOS
+      http://stackoverflow.com/questions/21295698/html5-contenteditable-attribute-not-working-properly-on-ios7-mobile-safari
+    */
+    .wj-control [contenteditable] {
+        user-select: text;
+        -moz-user-select: text;
+        -webkit-user-select: text;
+        -ms-user-select: text;
+    }
 
 /* Define control header */
 .wj-header {
-    background-color: #EAEAEA;
+    background: #EAEAEA;
     color: #444;
     font-weight: bold;
 }
 
 /* Selected state colors */
 .wj-state-selected {
-    background-color: #0085c7;
+    background: #0085c7;
     color: #fff;
 }
 
 /* Selected state colors */
 .wj-state-multi-selected {
-    background-color: #80ADBF;
+    background: #80ADBF;
     color: #fff;
 }
 
 /* Disabled elements (via CSS) */
 .wj-state-disabled {
-    opacity: 0.5;
+    opacity: .5;
     cursor: default;
     pointer-events: none;
 }
@@ -66,7 +72,7 @@
 /* Disabled controls (via attribute) */
 .wj-control[disabled] {
     opacity: .5;
-    background-color: #eeeeee;
+    background: #eeeeee;
     pointer-events: none;
 }
 
@@ -74,7 +80,7 @@
 
 /* Basic style for all button types */
 button,
-html input[type=button],
+input[type=button],
 input[type=reset],
 input[type=submit] {
     -webkit-appearance: button;
@@ -85,8 +91,8 @@ input[type=submit] {
 
 /* Global base button style */
 .wj-btn {
-    /*display: block;*/
-    padding: 0px 10px;
+    border: none;
+    padding: 0 10px;
     height: 100%;
     vertical-align: top;
     text-align: center;
@@ -97,21 +103,12 @@ input[type=submit] {
 /* Additional styling for default buttons */
 .wj-btn-default {
     border: 1px solid rgba(0,0,0,0.2);
-    background-color: transparent;
+    background: transparent;
     color: inherit;
-    /*font-weight: bold;*/
 }
 
-    /* Hover on 'default' button */
-    .wj-btn-default:hover {
-        background-color: rgba(0,0,0,0.1);
-    }
-
-    .wj-btn-default:focus {
-        background-color: rgba(0,0,0,0.1);
-    }
-
-/* Link Buttons in Wijmo controls*/
+/* Buttons/Link Buttons in Wijmo controls */
+.wj-control button[wj-part^="btn-"]:not(.wj-btn-default),
 .wj-control a[wj-part^="btn-"] {
     background: #e6e6e6;
     padding: 6px 20px;
@@ -121,15 +118,23 @@ input[type=submit] {
     text-decoration: none;
     font-size: 12px;
     font-weight: bold;
+    border: none;
 }
 
-    .wj-control a[wj-part^="btn-"]:hover {
-        text-decoration: none;
-        background: #e0e0e0;
+    /* hover/focus effect on buttons */
+    .wj-btn:hover,
+    .wj-control a[wj-part^="btn-"]:hover,
+    .wj-control button[wj-part^="btn-"]:hover,
+    .wj-btn:focus,
+    .wj-control a[wj-part^="btn-"]:focus,
+    .wj-control button[wj-part^="btn-"]:focus {
+        background: rgba(0,0,0,0.2);
+    }
+    .wj-btn.wj-btn-default:hover {
+        background: rgba(0,0,0,0.05);
     }
 
 /* Button Group Styles */
-
 /* Define button group based on bootstrap */
 .wj-btn-group,
 .wj-btn-group-vertical {
@@ -181,25 +186,20 @@ input[type=submit] {
     padding: 3px 10px;
 }
 
-    .wj-listbox-item:focus,
-    .wj-listbox-item input[type=checkbox]:focus {
-        outline: none;
-    }
-
     .wj-listbox-item.wj-separator {
         height: 1px;
-        margin: 3px 0px;
-        padding: 0px;
-        background-color: rgba(0,0,0,.1);
+        margin: 3px 0;
+        padding: 0;
+        background: rgba(0,0,0,.1);
     }
 
     .wj-listbox-item:not(.wj-state-selected):not(.wj-state-disabled):not(.wj-separator):hover {
-        background-color: rgba(0,0,0,.05);
+        background: rgba(0,0,0,.05);
     }
 
 .wj-listbox .wj-listbox-item label {
     font-weight: normal;
-    margin: 0px;
+    margin: 0;
 }
 
 .wj-dropdown .wj-listbox {
@@ -225,11 +225,11 @@ input[type=submit] {
 
 .wj-template {
     height: 100%;
-    display: table-cell;
+    display: table-cell; /* to work in Firefox, TFS 307664 */
+    position: relative;
 }
 
 .wj-dropdown-panel {
-    outline: none;
     box-shadow: 0 6px 13px rgba(0,0,0,0.2);
     z-index: 1500; /* Boostrap modals have zIndex 1050, so go higher */
 }
@@ -250,15 +250,6 @@ input[type=submit] {
 /* Remove clear icon from IE textbox */
 .wj-control input::-ms-clear {
     display: none;
-}
-
-/* Remove default browser focus outlines */
-.wj-control button,
-.wj-control input,
-.wj-control optgroup,
-.wj-control select,
-.wj-control textarea {
-    outline: 0;
 }
 
 .wj-inputnumber, 
@@ -301,7 +292,7 @@ input[type=submit] {
         height: 100%;
         border: none;
         border-radius: 0;
-        background-color: transparent;
+        background: transparent;
         color: inherit;
     }
 
@@ -403,6 +394,7 @@ input[type=submit] {
     width: 100%;
     height: auto;
     cursor: default;
+    direction: ltr; /* do not reverse calendar buttons */
 }
 
 .wj-calendar td {
@@ -503,18 +495,16 @@ input[type=submit] {
         position: absolute; /* avoid flicker in Chrome: TFS 261344 */
         top: 0;
     }
-
-.wj-cell {
-    position: absolute;
-    box-sizing: border-box;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding: 3px;
-    border-right: 1px solid #d4d4d4;
-    border-bottom: 1px solid #d4d4d4;
-    outline: none;
-}
+    .wj-cell {
+        position: absolute;
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 3px;
+        border-right: 1px solid #d4d4d4;
+        border-bottom: 1px solid #d4d4d4;
+    }
 
     /* Text color for nested controls in selected rows */
     .wj-cell.wj-state-selected .wj-control,
@@ -524,7 +514,7 @@ input[type=submit] {
 
 /* Selected headers */
 .wj-header.wj-state-multi-selected {
-    background-color: #e4e4e4;
+    background: #e4e4e4;
     color: #444;
     font-weight: bold;
 }
@@ -556,7 +546,7 @@ input[type=submit] {
     border: 1.2px solid red;
 }
 .wj-rowheaders .wj-cell.wj-state-invalid {
-    background: rgba(255, 0, 0, 0.30)
+    background: rgba(255, 180, 180, 1); /* TFS 306815 */
 }
 .wj-cells .wj-cell.wj-state-invalid:after {
     position: absolute;
@@ -568,9 +558,17 @@ input[type=submit] {
     border-right: 6px solid red;
 }
 
-/* Cells with word-wrapping */
+/* Cells with word-wrapping/line breaks */
 .wj-cell.wj-wrap {
     white-space: normal;
+    text-overflow: clip;
+}
+.wj-cell.wj-multiline {
+    white-space: pre; /* or pre-line? */
+    text-overflow: clip;
+}
+.wj-cell.wj-wrap.wj-multiline {
+    white-space: pre-wrap;
     text-overflow: clip;
 }
 
@@ -586,7 +584,7 @@ input[type=submit] {
 
 /* Group row background */
 .wj-group:not(.wj-state-selected):not(.wj-state-multi-selected) {
-    background-color: #dddddd;
+    background: #dddddd;
 }
 
 /* Frozen area boundaries */
@@ -597,32 +595,54 @@ input[type=submit] {
     border-right: 1px solid #666;
 }
 
+/* Frozen area cell clones */
+.wj-frozen-clone .wj-cell button,
+.wj-frozen-clone .wj-cell a,
+.wj-frozen-clone .wj-cell input,
+.wj-frozen-clone .wj-cell textarea {
+    pointer-events: auto;
+}
+
+
+/* Grid buttons */
+.wj-cell .wj-btn.wj-btn-glyph {
+    padding: 0 4px;
+    height: auto;
+    min-width: 1.5em;
+    color: inherit;
+    background: transparent;
+    opacity: .6;
+}
+    .wj-cell .wj-btn.wj-btn-glyph:hover {
+        opacity: 1;
+    }
+    .wj-cell .wj-btn.wj-btn-glyph.wj-right {
+        position: absolute;
+        right: 2px;
+    }
+    .wj-rtl .wj-cell .wj-btn.wj-btn-glyph.wj-right {
+        left: 2px;
+        right: auto;
+    }
+
 /* Grid editor */
 .wj-flexgrid .wj-grid-editor {
     box-sizing: border-box;
-    padding: 3px;
-    border: none;
     width: 100%;
     height: 100%;
-    margin: 0px;
-}
-.wj-cell .wj-elem-dropdown {
-    position: absolute;
-    top: 0px;
-    padding: 3px 6px;
-    opacity: .25;
-    right: 0;
-}
-
-[dir=rtl] .wj-cell .wj-elem-dropdown {
-    left: 0;
-    right: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+    resize: none;
+    background: inherit;
+    color: inherit;
 }
 
 /* Grid drag/resize row/col marker */
 .wj-flexgrid .wj-marker {
     position: absolute;
-    background-color: #0085c7;
+    background: #0085c7;
     opacity: 0.5;
     pointer-events: none;
     z-index: 1000;
@@ -634,68 +654,77 @@ input[type=submit] {
 }
 
 /* Switch cell borders in RTL grids */
-[dir=rtl] .wj-cell {
+.wj-rtl .wj-cell {
     border-left: 1px solid #c6c6c6;
     border-right: none;
 }
 
 /* Switch frozen borders in RTL grids */
-[dir=rtl] .wj-frozen-col {
+.wj-rtl .wj-frozen-col {
     border-left: 1px solid #666;
     border-right: none;
 }
 
 /* FlexGrid Filter extension */
-
-.wj-header .wj-elem-filter {
-    float: right;
-    cursor: pointer;
-    padding: 0 4px;
+.wj-cell.wj-filter-on, 
+.wj-cell.wj-filter-off {
+    padding-right: 1.6em;
 }
-
-[dir=rtl] .wj-header .wj-elem-filter {
-    float: left;
+.wj-rtl .wj-cell.wj-filter-on,
+.wj-rtl .wj-cell.wj-filter-off {
+    padding-left: 1.6em;
+    padding-right: 2px;
 }
-
 .wj-filter-on .wj-glyph-filter {
-    opacity: 0.85;
+    opacity: 0.9;
 }
-
 .wj-filter-off .wj-glyph-filter {
-    opacity: 0.25;
+    opacity: 0.5;
 }
-
 .wj-columnfiltereditor {
     padding: 10px;
     min-width: 230px;
     max-width: 400px;
 }
-
+    .wj-columnfiltereditor .wj-filtertype {
+        text-align: right;
+        margin: 14px 0;
+        font-size: 12px;
+    }
+    .wj-columnfiltereditor a {
+        color: inherit;
+        font-size: inherit;
+        font-weight: bold;
+    }
+    .wj-columnfiltereditor a.wj-state-disabled {
+        text-decoration: none;
+    }
     .wj-columnfiltereditor .wj-control {
         margin-bottom: 6px;
         width: 100%;
     }
-
-    .wj-columnfiltereditor .wj-listbox .wj-listbox-item label {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+    .wj-columnfiltereditor .wj-listbox {
+        height: 150px;
     }
+        .wj-columnfiltereditor .wj-listbox .wj-listbox-item {
+            max-width: 25em;
+        }
+            .wj-columnfiltereditor .wj-listbox .wj-listbox-item label {
+                white-space: nowrap;
+            }
 
 /* FlexGrid GroupPanel extension */
 .wj-grouppanel {
     display: block;
-    background-color: #f4f4f4;
+    background: #f4f4f4;
     padding: 15px;
 }
-
     .wj-grouppanel .wj-cell {
         margin-right: 10px;
         padding: 6px 16px;
         border: 1px solid #e6e6e6;
         cursor: pointer;
     }
-
         .wj-grouppanel .wj-cell:hover {
             background: #e0e0e0;
         }
@@ -744,12 +773,12 @@ input[type=submit] {
 .wj-tooltip {
     position: absolute;
     z-index: 1000;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     pointer-events: none;
     max-width: 400px;
     padding: 6px;
-    background-color: #ffffe5;
+    background: #ffffe5;
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 6px;
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
@@ -762,7 +791,7 @@ input[type=submit] {
     height: 400px;
     padding: 15px 10px;
     margin-bottom: 12px;
-    background-color: white;
+    background: white;
     border: 1px solid #e4e4e4;
     display: block;
 }
@@ -882,14 +911,13 @@ input[type=submit] {
 .wj-flexchart .wj-chart-rangeslider {
     position: absolute;
     touch-action: none;
-    -ms-touch-action: none;
 }
 
     .wj-flexchart .wj-chart-rangeslider button {
         position: absolute;
         text-align: center;
         vertical-align: middle;
-        padding: 0px;
+        padding: 0;
         line-height: 16px;
         border-radius: 2px;
     }
@@ -905,7 +933,7 @@ input[type=submit] {
 }
 
 .wj-flexchart .wj-chart-rangeslider .wj-rangeslider-content {
-    background-color: #eaeaea;
+    background: #eaeaea;
     height: 100%;
     position: relative;
 }
@@ -914,7 +942,7 @@ input[type=submit] {
     position: absolute;
     text-align: center;
     vertical-align: middle;
-    background-color: #BDBDBD;
+    background: #BDBDBD;
     height: 100%;
     width: 100%;
 }
@@ -932,7 +960,7 @@ input[type=submit] {
 
 .wj-flexchart .wj-chart-hrangeslider .wj-rangeslider-minhandle,
 .wj-flexchart .wj-chart-hrangeslider .wj-rangeslider-maxhandle {
-    background-color: #BDBDBD;
+    background: #BDBDBD;
     cursor: ew-resize;
     height: 22px;
     margin-top: -2px;
@@ -941,7 +969,7 @@ input[type=submit] {
 
 .wj-flexchart .wj-chart-vrangeslider .wj-rangeslider-minhandle,
 .wj-flexchart .wj-chart-vrangeslider .wj-rangeslider-maxhandle {
-    background-color: #BDBDBD;
+    background: #BDBDBD;
     cursor: ns-resize;
     width: 22px;
     margin-left: -2px;
@@ -953,19 +981,19 @@ input[type=submit] {
 }
 
 .wj-flexchart .wj-chart-hrangeslider .wj-rangeslider-decbtn {
-    left: 0px;
+    left: 0;
 }
 
 .wj-flexchart .wj-chart-hrangeslider .wj-rangeslider-incbtn {
-    right: 0px;
+    right: 0;
 }
 
 .wj-flexchart .wj-chart-vrangeslider .wj-rangeslider-decbtn {
-    bottom: 0px;
+    bottom: 0;
 }
 
 .wj-flexchart .wj-chart-vrangeslider .wj-rangeslider-incbtn {
-    top: 0px;
+    top: 0;
 }
 
 .wj-flexchart .wj-chart-rangeslider .wj-glyph-left {
@@ -1003,7 +1031,7 @@ input[type=submit] {
 
     .wj-flexchart .wj-chart-rangeselector-container .wj-chart-rangeslider,
     .wj-flexchart .wj-chart-rangeselector-container .wj-rangeslider-content {
-        background-color: transparent;
+        background: transparent;
         border-color: transparent;
     }
 
@@ -1013,7 +1041,7 @@ input[type=submit] {
 
     .wj-flexchart .wj-chart-rangeselector-container .wj-rangeslider-minhandle,
     .wj-flexchart .wj-chart-rangeselector-container .wj-rangeslider-maxhandle {
-        background-color: transparent;
+        background: transparent;
         opacity: 0.6;
         border: 2px solid Gray;
         border-radius: 0.5em;
@@ -1079,7 +1107,7 @@ input[type=submit] {
 
     .wj-flexchart .wj-chart-rangeselector-container .wj-chart-rangeslider .wj-rangeslider-minhandle.wj-rangeslider-handle-active,
     .wj-flexchart .wj-chart-rangeselector-container .wj-chart-rangeslider .wj-rangeslider-maxhandle.wj-rangeslider-handle-active {
-        background-color: rgba(136,189,230,0.7);
+        background: rgba(136,189,230,0.7);
     }
 
 .wj-flexchart .wj-rangeselector .wj-scroller-center {
@@ -1112,7 +1140,7 @@ input[type=submit] {
 
 /* chart marker */
 .wj-flexchart-touch-disabled {
-    -ms-touch-action: none;
+    touch-action: none;
 }
 
 .wj-flexchart .wj-chart-linemarker {
@@ -1147,12 +1175,9 @@ input[type=submit] {
 
 /* Gauges */
 
-.wj-gauge:focus {
-    outline: none;
-}
-
 .wj-gauge {
     display: block;
+    touch-action: none;
 }
 
 .wj-gauge .wj-face path {
@@ -1204,20 +1229,20 @@ input[type=submit] {
 /* Popup */
 
 .wj-popup {
-    background-color: white;
+    background: white;
     box-shadow: 0 3px 9px rgba(0,0,0,.5);
     z-index: 1500;
-    margin: 2px 0px;
+    margin: 2px 0;
 }
 
 .wj-popup-backdrop {
-    background-color: black;
+    background: black;
     opacity: .5;
     position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     z-index: 1500;
 }
 
@@ -1242,16 +1267,15 @@ input[type=submit] {
         content: '\2731\fe0e'
     }
     .wj-glyph-calendar {
-        top: .2em;
         width: 1em;
         height: 1em;
         border: .1em solid;
         border-top: .3em solid;
+        transform: translateY(.15em);
     }
         .wj-glyph-calendar:after {
             position: absolute;
             font-size: 50%;
-            /*top: -.15em;*/
             left: .5em;
             content: '1';
         }
@@ -1270,17 +1294,18 @@ input[type=submit] {
     .wj-glyph-clock {
         width: 1em;
         height: 1em;
-        border: .13em solid;
+        border: .1em solid;
         border-radius: 50%;
+        transform: translateY(.15em);
     }
         .wj-glyph-clock:after {
             position: absolute;
             border-left: .1em solid;
             border-bottom: .1em solid;
-            width: .3em;
-            height: .4em;
-            top: .05em;
-            left: .32em;
+            width: .25em;
+            height: .3em;
+            top: .1em;
+            left: .35em;
             content: "";
         }
     .wj-glyph-diamond:after {
@@ -1297,10 +1322,12 @@ input[type=submit] {
     .wj-glyph-down-left {
         border-top: .65em solid transparent;
         border-left: .65em solid;
+        top: -2px;
     }
     .wj-glyph-down-right {
         border-bottom: .65em solid;
         border-left: .65em solid transparent;
+        top: -2px;
     }
     .wj-glyph-file {
         border-left: .7em solid;
@@ -1360,6 +1387,9 @@ input[type=submit] {
             transform: translate(-100%,-50%);
             content: '';
         }
+        [dir=rtl] .wj-glyph-step-backward:after, .wj-glyph-step-forward-rtl:after {
+            transform: translate(0, -50%);
+        }
     .wj-glyph-step-forward, .wj-glyph-step-backward-rtl {
         border-top: .4em solid transparent;
         border-bottom: .4em solid transparent;
@@ -1372,6 +1402,10 @@ input[type=submit] {
             transform: translateY(-50%);
             content: '';
         }
+        [dir=rtl] .wj-glyph-step-forward:after, .wj-glyph-step-backward-rtl:after {
+            transform: translate(100%, -50%);
+        }
+
     .wj-glyph-up {
         border-right: .4em solid transparent;
         border-bottom: .5em solid;
@@ -1408,7 +1442,6 @@ input[type=submit] {
     wijmo.grid.sheet module
 */
 .wj-flexsheet .wj-content {
-    outline: none;
     border-color: #ccc;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -1462,7 +1495,7 @@ div[wj-part='tab-holder'] {
 }
 
 span.wj-sheet-icon {
-    margin: 0px 14px;
+    margin: 0 14px;
 }
 
 div.wj-sheet-page {
@@ -1470,22 +1503,22 @@ div.wj-sheet-page {
 }
 
     div.wj-sheet-page > button {
-        padding: 0px;
+        padding: 0;
         padding-top: 1px;
         border-radius: 0;
         border: 0;
-        background-color: #e4e5e8;
+        background: #e4e5e8;
         color: #727275;
     }
 
         div.wj-sheet-page > button:hover {
-            background-color: #dee0e3;
+            background: #dee0e3;
         }
 
 .wj-sheet-tab ul {
     display: inline-block;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     float: left;
 }
 
@@ -1498,7 +1531,7 @@ div.wj-sheet-page {
         margin-top: 1px;
         border-left: 1px solid #b8b8b8;
         min-height: 20px;
-        background-color: #d2d3d8;
+        background: #d2d3d8;
         text-align: center;
         padding-top: 2px;
         font-size: 11px;
@@ -1507,7 +1540,7 @@ div.wj-sheet-page {
 
         .wj-sheet-tab ul li.active {
             border-top-color: transparent;
-            background-color: white;
+            background: white;
             cursor: default;
             height: 100%;
             margin-top: 1px;
@@ -1521,13 +1554,13 @@ div.wj-sheet-page {
 
         .wj-sheet-tab ul li:not(.active):hover,
         .wj-sheet-tab ul li:not(.hidden):hover {
-            background-color: #aabcd6;
+            background: #aabcd6;
             color: #fff;
             cursor: pointer;
         }
 
         .wj-sheet-tab ul li.wj-new-sheet:hover {
-            background-color: #0085c7;
+            background: #0085c7;
         }
 
 .wj-new-sheet {
@@ -1536,7 +1569,7 @@ div.wj-sheet-page {
     height: 20px;
     font-size: 11px;
     text-align: center;
-    background-color: #668eb9;
+    background: #668eb9;
     color: #fff;
 }
 
@@ -1556,16 +1589,16 @@ div.wj-sheet > div {
 }
 
 .wj-flexsheet {
-    background-color: #a9a9a9;
+    background: #a9a9a9;
     width: 100%;
     height: 100%;
 }
 
 .wj-context-menu {
-    background-color: #fff;
+    background: #fff;
     border: thin solid #808080;
     cursor: default;
-    padding: 3px 0px;
+    padding: 3px 0;
 }
 
 .wj-context-menu-item {
@@ -1573,16 +1606,16 @@ div.wj-sheet > div {
 }
 
     .wj-context-menu-item:not(.wj-context-menu-item-selected):hover {
-        background-color: rgba(0,0,0,.1);
+        background: rgba(0,0,0,.1);
     }
 
 .wj-context-menu-item-selected {
-    background-color: #0085c7;
+    background: #0085c7;
     color: #fff;
 }
 
 .wj-header-row {
-    background-color: #96abb4 !important;
+    background: #96abb4 !important;
     color: #fff !important;
 }
 
@@ -1632,26 +1665,19 @@ div.wj-sheet > div {
     }
     .wj-pivotpanel .wj-marker {
         position: absolute;
-        background-color: #0085c7;
+        background: #0085c7;
         opacity: 0.5;
         pointer-events: none;
     }
-    .wj-pivotpanel .wj-flexgrid .wj-cell:not(.wj-header) {
+    .wj-pivotpanel .wj-flexgrid .wj-cell {
         border: none;
         background: inherit !important;
         color: inherit !important;
     }
-        .wj-pivotpanel .wj-flexgrid .wj-cell:not(.wj-header):hover {
+        .wj-pivotpanel .wj-flexgrid .wj-cell:hover {
             background: rgba(0, 0, 0, 0.03) !important;
             border-radius: 4px;
-            transition: all linear 300ms;
         }
-    .wj-pivotpanel .wj-flexgrid .wj-cell.wj-header {
-        font-weight: bold;
-        color: inherit;
-        background: rgba(0, 0, 0, 0.05);
-        border: none;
-    }
     .wj-pivotpanel .wj-flexgrid .wj-glyph-filter {
         cursor: default;
         opacity: 0.5;
@@ -1712,6 +1738,10 @@ div.wj-sheet > div {
         width: 100%;
     }
 
+    .wj-pivotfiltereditor .wj-listbox {
+        max-height: 150px;
+    }
+
     .wj-pivotfiltereditor .wj-listbox .wj-listbox-item label {
         overflow: hidden;
         white-space: nowrap;
@@ -1732,7 +1762,7 @@ div.wj-sheet > div {
 }
 
 .wj-pivotgrid .wj-aggregate.wj-cell:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
-    background-color: rgba(0,133,199,0.15); /* slightly highlight scrollable totals cells */
+    background: rgba(0,133,199,0.15); /* slightly highlight scrollable totals cells */
 }
 
 /* PivotChart */
@@ -1778,6 +1808,57 @@ div.wj-sheet > div {
     box-sizing: border-box;
 }
 
+/**** TabPanel styles ****/
+
+.wj-control.wj-tabpanel {
+    display: block;
+}
+    .wj-control.wj-tabpanel > div > .wj-tabpanes {
+        overflow: auto;
+        border-top: 1px solid #ddd;
+        user-select: text;
+        -moz-user-select: text;
+        -webkit-user-select: text;
+        -ms-user-select: text;
+    }
+    .wj-control.wj-tabpanel > div > .wj-tabheaders > .wj-tabheader {
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: inherit;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+        .wj-control.wj-tabpanel > div > .wj-tabheaders > .wj-tabheader.wj-state-active { /* active tab headers*/
+            color: #0085c7;
+            background: white;
+        }
+        .wj-control.wj-tabpanel > div > .wj-tabheaders > .wj-tabheader:not(.wj-state-active):focus { /* focused/inactive tab headers*/
+            background: rgba(0,0,0,.1);
+        }
+        .wj-control.wj-tabpanel > div > .wj-tabheaders > .wj-tabheader:after { /* underline active header */
+            content: '';
+            position: absolute;
+            background: #0085c7;
+            height: 2.5px;
+            left: 45%;
+            width: 10%;
+            bottom: 0;
+            visibility: hidden;
+        }
+        .wj-control.wj-tabpanel > div > .wj-tabheaders > .wj-tabheader.wj-state-active:after { /* show underline */
+            left: 0;
+            width: 100%;
+            visibility: visible;
+            transition-duration: .2s;
+        }
+    .wj-control.wj-tabpanel > div > .wj-tabpanes > .wj-tabpane:not(.wj-state-active) { /* hide inactive panes */
+        display: none;
+    }
+
 /**** TreeView styles ****/
 
 .wj-treeview {
@@ -1786,9 +1867,6 @@ div.wj-sheet > div {
     background: transparent;
     border: none;
 }
-    .wj-treeview *:focus {
-        outline: none;
-    }
     .wj-treeview.wj-state-loading * {
         cursor: wait !important;
     }
@@ -1842,7 +1920,7 @@ div.wj-sheet > div {
 /* TreeView drag/drop marker */
 .wj-treeview .wj-marker {
     position: absolute;
-    background-color: #0085c7;
+    background: #0085c7;
     opacity: 0.5;
     pointer-events: none;
 }
@@ -1913,7 +1991,7 @@ div.wj-sheet > div {
         display: inline-block;
         float: left;
         border: 1px solid #d9d9d9;
-        background-color: #ededed;
+        background: #ededed;
         white-space: nowrap;
         margin: 5px 5px 5px 5px;
         vertical-align: middle;
@@ -2013,14 +2091,14 @@ div.wj-sheet > div {
 .wj-viewer {
     height: 750px;
     width: 1100px;
-    background-color: white;
+    background: white;
     margin-left: auto;
     margin-right: auto;
 }
 
     .wj-viewer.full-screen {
-        left: 0px;
-        top: 0px;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
         display: block;
@@ -2033,7 +2111,7 @@ div.wj-sheet > div {
         height: 100%;
         display: block;
         position: absolute;
-        padding-top: 0px;
+        padding-top: 0;
     }
 
     .wj-viewer.full-screen .wj-viewer-outer.mobile {
@@ -2071,8 +2149,8 @@ body.full-screen {
 }
 
     .wj-viewer .wj-toolbarwrapper.wj-btn-group > .wj-btn {
-        padding-left: 0px;
-        padding-right: 0px;
+        padding-left: 0;
+        padding-right: 0;
         height: 40px;
         box-sizing: border-box;
         position: relative;
@@ -2096,12 +2174,11 @@ body.full-screen {
     }
 
         .wj-toolbar a:hover, .wj-toolbar a:focus {
-            background-color: #eee;
-            outline: none;
+            background: #eee;
         }
 
         .wj-toolbar a:hover.disabled, .wj-toolbar a:focus.disabled, .wj-toolbar a:hover.checked, .wj-toolbar a:focus.checked {
-            background-color: transparent;
+            background: transparent;
             cursor: default;
         }
 
@@ -2187,7 +2264,7 @@ body.full-screen {
         opacity: 1;
     }
     .wj-toolbar-move:hover.enabled {
-        background-color: #f0f0f0;
+        background: #f0f0f0;
         opacity: 1;
     }
 
@@ -2201,7 +2278,7 @@ body.full-screen {
     border: none;
     bottom: 50px;
     width: 460px;
-    background-color: #303030;
+    background: #303030;
     visibility: hidden;
     opacity: 0.8;
 }
@@ -2217,7 +2294,7 @@ body.full-screen {
     }
 
     .wj-mini-toolbar a:focus {
-        background-color: transparent;
+        background: transparent;
     }
 
     .wj-mini-toolbar .slash,
@@ -2227,7 +2304,7 @@ body.full-screen {
 
     .wj-mini-toolbar .wj-pagenumber {
         color: #e0e0e0;
-        background-color: #202020;
+        background: #202020;
     }
 
     .wj-mini-toolbar .wj-toolbar-move {
@@ -2240,7 +2317,7 @@ body.full-screen {
     }
 
     .wj-mini-toolbar .wj-btn:hover {
-        background-color: #606060 !important;
+        background: #606060 !important;
     }
 
 .wj-viewer-container {
@@ -2272,7 +2349,7 @@ body.full-screen {
     }
         .wj-viewer-container .wj-viewer-splitter button {
             padding: 0 2px;
-            background-color: #fafafa;
+            background: #fafafa;
             border-left: 1px solid #c8c8c8;
             border-right: 1px solid #c8c8c8;
             border-top: none;
@@ -2280,7 +2357,7 @@ body.full-screen {
         }
 
             .wj-viewer-container .wj-viewer-splitter button:hover {
-                background-color: #dadada;
+                background: #dadada;
             }
 
         .wj-viewer-container .wj-viewer-splitter span {
@@ -2293,7 +2370,7 @@ body.full-screen {
 }
 
     .mobile .wj-viewer-leftpanel {
-        width: 0px;
+        width: 0;
     }
 
     .wj-viewer.full-screen .wj-viewer-leftpanel {
@@ -2339,7 +2416,6 @@ body.full-screen {
         background-position: center center;
         width: 48px;
         height: 48px;
-        outline: none;
         line-height: 1.42857143;
         border-radius: 0;
         border-width: 0;
@@ -2351,7 +2427,7 @@ body.full-screen {
     .wj-nav > li > a:hover,
     .wj-nav > li > a:focus {
         text-decoration: none;
-        background-color: #eee;
+        background: #eee;
     }
 
     .wj-nav > li > a .wj-arrow {
@@ -2363,8 +2439,8 @@ body.full-screen {
             top: 17px;
             z-index: 1000;
             right: -1px;
-            height: 0px;
-            width: 0px;
+            height: 0;
+            width: 0;
             border: 7px solid transparent;
             border-right-color: #fafafa;
         }
@@ -2373,8 +2449,8 @@ body.full-screen {
             position: absolute;
             top: 16px;
             right: -1px;
-            height: 0px;
-            width: 0px;
+            height: 0;
+            width: 0;
             border: 8px solid transparent;
             border-right-color: #c8c8c8;
         }
@@ -2396,7 +2472,7 @@ body.full-screen {
     .wj-viewer-outer.mobile .wj-viewer-tabsleft {
         width: 100%;
         position: absolute;
-        top: 0px;
+        top: 0;
         z-index: 1000;
     }
 
@@ -2427,9 +2503,9 @@ body.full-screen {
     .wj-tabcontent .wj-tabpane {
         position: relative;
         left: -9999px;
-        background-color: #fafafa;
-        width: 0px;
-        height: 0px;
+        background: #fafafa;
+        width: 0;
+        height: 0;
         display: none;
     }
         .wj-tabcontent .wj-tabpane .wj-tabtitle-wrapper {
@@ -2491,31 +2567,27 @@ body.full-screen {
 
         .wj-tabcontent .wj-tabpane .wj-outlines-tree {
             border-radius: 0;
-            background-color: #fafafa;
+            background: #fafafa;
             padding-top: 20px;
             padding-left: 4px;
         }
 
     .wj-tabcontent .wj-listbox-item.wj-thumbnail-item.wj-state-selected {
-        background-color: transparent;
+        background: transparent;
         color: inherit;
     }
 
     .wj-tabcontent .wj-listbox-item.wj-thumbnail-item:not(.wj-state-selected):not(.wj-state-disabled):not(.wj-separator):hover {
-        background-color: transparent;
+        background: transparent;
         color: inherit;
     }
 
     .wj-tabcontent .wj-thumbnaillist {
         width: 100%;
-        border-radius: 0px;
+        border-radius: 0;
         border: none;
         display: block;
     }
-
-        .wj-tabcontent .wj-tabpane .wj-thumbnaillist:focus {
-            outline: none;
-        }
 
         .wj-tabcontent .wj-tabpane .wj-thumbnaillist .wj-thumbnail-item {
             height: auto;
@@ -2524,10 +2596,9 @@ body.full-screen {
         }
 
             .wj-tabcontent .wj-tabpane .wj-thumbnaillist .wj-thumbnail-item .wj-pagethumbnail {
-                background-color: white;
+                background: white;
                 border: 1px solid #c8c8c8;
                 cursor: pointer;
-                outline: none;
                 margin: 0 auto 10px auto;
             }
 
@@ -2536,7 +2607,7 @@ body.full-screen {
         }
 
     .wj-tabcontent .active {
-        left: 0px;
+        left: 0;
         width: 300px;
         height: 100%;
         border-left: 1px solid #c8c8c8;
@@ -2544,7 +2615,7 @@ body.full-screen {
     }
 
     .wj-viewer-outer.mobile .wj-tabcontent .active {
-        left: 0px;
+        left: 0;
         width: 100%;
         height: 100%;
         border: 1px solid #c8c8c8;
@@ -2553,7 +2624,7 @@ body.full-screen {
 
 .wj-viewpanel-container {
     position: relative;
-    background-color: #e5e5e5;
+    background: #e5e5e5;
     float: right;
     height: 100%;
     width: 100%;
@@ -2562,9 +2633,8 @@ body.full-screen {
 }
 
 .wj-pageview {
-    outline: none;
     position: relative;
-    background-color: #e5e5e5;
+    background: #e5e5e5;
     height: 100%;
     width: 100%;
     text-align: center;
@@ -2581,7 +2651,6 @@ body.full-screen {
     }
 
 .wj-pageview-pagescontainer {
-    outline: none;
     position: relative;
     height: 100%;
     width: 100%;
@@ -2596,11 +2665,10 @@ body.full-screen {
     }
 
 .wj-pageview-vscroller {
-    outline: none;
     display: inline-block;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     height: 100%;
     width: 18px;
     float: right;
@@ -2623,15 +2691,11 @@ body.full-screen {
     }
 }
 
-    .wj-viewpanel-container:focus {
-        outline: none;
-    }
-
     .wj-viewpanel-container .wj-view-page {
         width: 1px;
         height: 1px;
         margin: 0 auto 30px auto;
-        background-color: #fff;
+        background: #fff;
         border: 1px solid rgba(0,0,0,.3);
         box-shadow: 0 2px 8px rgba(0,0,0,.15);
     }
@@ -2645,14 +2709,14 @@ body.full-screen {
         }
 
         .wj-viewpanel-container .wj-view-page:last-child {
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
 
 .wj-viewer-loading {
-    background-color: rgba(204,204,204,.8);
+    background: rgba(204,204,204,.8);
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -2743,34 +2807,34 @@ body.full-screen {
 
     .wj-outlines-tree .wj-header.wj-cell {
         color: #fff;
-        background-color: #000;
+        background: #000;
         border: none;
         font-weight: bold;
     }
 
     .wj-outlines-tree .wj-cell {
-        background-color: #fafafa;
+        background: #fafafa;
         color: #000;
         cursor: pointer;
     }
 
     .wj-outlines-tree .wj-alt:not(.wj-state-selected):not(.wj-state-multi-selected) {
-        background-color: #fafafa;
+        background: #fafafa;
         color: #000;
     }
 
     .wj-outlines-tree .wj-group:not(.wj-state-selected):not(.wj-state-multi-selected) {
-        background-color: #fafafa;
+        background: #fafafa;
         color: #000;
     }
 
     .wj-outlines-tree .wj-state-selected {
-        background-color: #eee;
+        background: #eee;
         color: #000;
     }
 
     .wj-outlines-tree .wj-state-multi-selected {
-        background-color: #fafafa;
+        background: #fafafa;
         color: #000;
     }
 
@@ -2797,7 +2861,7 @@ body.full-screen {
     }
 
         .wj-tabcontent .wj-tabpane .wj-searchcontainer .wj-btn-group button{
-            background-color: transparent;
+            background: transparent;
             background-position: center center;
             background-repeat: no-repeat;
             height: 30px;
@@ -2835,22 +2899,18 @@ body.full-screen {
     float: left;
     width: 100%;
     padding: 10px;
-    background-color: transparent;
+    background: transparent;
     border: none;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
         .wj-tabcontent .wj-tabpane .wj-searchresultlist .wj-search-item {
             cursor: pointer;
         }
 
-            .wj-tabcontent .wj-tabpane .wj-searchresultlist .wj-search-item:focus {
-                outline: none;
-            }
-
         .wj-tabcontent .wj-tabpane .wj-searchresultlist .wj-search-item:hover,
         .wj-tabcontent .wj-tabpane .wj-searchresultlist .wj-search-item.selected {
-            background-color: #eee;
+            background: #eee;
         }
 
         .wj-tabcontent .wj-tabpane .wj-searchresultlist .wj-search-text {
@@ -2867,7 +2927,7 @@ body.full-screen {
 }
 
 .wj-view-page .wj-loading {
-    background-color: rgba(204,204,204,.8);
+    background: rgba(204,204,204,.8);
     width: 100%;
     height: 100%;
 }
@@ -2881,7 +2941,9 @@ body.full-screen {
     pointer-events: none;
 }
 
-.wj-view-page a rect {
+.wj-view-page rect[arsvg\:data-action-type],
+.wj-view-page a rect
+{
     pointer-events: inherit;
 }
 
@@ -2895,7 +2957,7 @@ body.full-screen {
     width: 22px;
     height: 22px;
     enable-background: new 0 0 22 22;
-    stroke-width: 0px;
+    stroke-width: 0;
     stroke: black;
 }
 
@@ -2912,11 +2974,7 @@ body.full-screen {
 }
 
 .wj-content:not(.customEdit) .wj-btn-group .wj-btn:hover {
-  background-color: #eee
-}
-
-.wj-content:not(.customEdit) .wj-btn-group .wj-btn:focus {
-  outline: none;
+  background: #eee
 }
 
 .wj-content:not(.customEdit) .wj-btn-group .wj-btn.wj-state-active .wj-svg-btn {
@@ -3055,7 +3113,7 @@ body.full-screen {
         }
 
         .wj-searchbar .wj-searchcontainer .wj-btn-group button{
-            background-color: transparent;
+            background: transparent;
             background-position: center center;
             background-repeat: no-repeat;
             height: 30px;
@@ -3104,8 +3162,8 @@ body.full-screen {
     border: solid;
     border-color: red;
     border-width: 2px;
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     z-index: 1;
     position: absolute;
     display: none;

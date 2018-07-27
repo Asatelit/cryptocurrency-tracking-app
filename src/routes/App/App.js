@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import 'wijmo/styles/wijmo.css';
 /* Action Creators */
 import * as appActionCreators from '../../actions/appActions';
 import * as portfoliosActionCreators from '../../actions/portfoliosActions';
@@ -18,7 +19,6 @@ import TopBar from '../../components/TopBar';
 import * as wjUtils from '../../utils/wjUtils';
 /* CSS */
 import './App.css';
-import './Wijmo.css';
 
 class App extends Component {
   /* THE COMPONENT LIFECYCLE */
